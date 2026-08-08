@@ -22,6 +22,24 @@ This repository was prepared as the organized foundation for a fullstack Laravel
 | Team Member 4 | Fullstack developer | Add LinkedIn URL |
 | Team Member 5 | Fullstack developer | Add LinkedIn URL |
 
+## Academic Context
+
+This repository was prepared as the organized foundation for a fullstack Laravel team project.
+
+- Instructor: Eng. Mohamed Gamal Zayan
+- Team size: 5 members
+- Team lead / repository owner: Merna Mohamed Elatafy
+
+## Team
+
+| Member | Role | LinkedIn |
+| --- | --- | --- |
+| Merna Mohamed Elatafy | Repository owner / Fullstack developer | Add LinkedIn URL |
+| Gerges Nabil | Fullstack developer | Add LinkedIn URL |
+| Team Member 3 | Fullstack developer | Add LinkedIn URL |
+| Team Member 4 | Fullstack developer | Add LinkedIn URL |
+| Team Member 5 | Fullstack developer | Add LinkedIn URL |
+
 ## Stack
 
 - PHP 8.0+
