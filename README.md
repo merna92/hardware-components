@@ -24,8 +24,8 @@ This repository was prepared as the organized foundation for a fullstack Laravel
 
 ## Stack
 
-- PHP 8.0+
-- Laravel 9
+- PHP 8.3+
+- Laravel 13
 - MySQL
 - Blade templates
 - Bootstrap
