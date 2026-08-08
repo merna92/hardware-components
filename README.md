@@ -20,7 +20,7 @@ This repository was prepared as the organized foundation for a fullstack Laravel
 | Gerges Nabil Nady | Fullstack developer | [LinkedIn](https://www.linkedin.com/in/gerges-nabil-11055329b) |
 | Neama Ibrahim Mohamed | Fullstack developer | [LinkedIn](https://www.linkedin.com/in/neamaibrahim2082005/) |
 | Ali Mohamed Ali | Fullstack developer | [LinkedIn](https://www.linkedin.com/in/ali-hegazy1992) |
-| Kholoud | Fullstack developer | Add LinkedIn URL |
+| Kholoud Hamdy Abdallah | Fullstack developer | [LinkedIn](https://www.linkedin.com/in/kholood-hamdy-448a863b3) |
 
 ## Stack
 
