@@ -1,0 +1,68 @@
+.collapse{
+    visibility: visible !important;
+}
+
+.custom-navbar {
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-30);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.custom-navbar .navbar-brand {
+  color: var(--color-text2);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.custom-navbar .nav-link {
+  color: var(--color-text2) ;
+  font-weight: 500;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  transition: color 0.2s ease;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: var(--color-button2);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.custom-search-input {
+  background-color: var(--color-secondary1);
+  border: none;
+  font-size: 0.875rem;
+  color: var(--color-text2);
+}
+
+.custom-search-input::placeholder {
+  color: var(--color-text1);
+}
+
+.custom-search-btn {
+  background-color: var(--color-secondary1);
+  border: none;
+  color: var(--color-text2);
+}
+
+.navbar-icon-btn {
+  color: var(--color-text2);
+  position: relative;
+  text-decoration: none;
+  font-size: 1.25rem;
+  transition: color 0.2s ease;
+}
+
+.navbar-icon-btn:hover {
+  color: var(--color-button2);
+}
+
+.badge-wishlist {
+  background-color: var(--color-button2);
+  color: var(--color-primary);
+  font-size: 0.65rem;
+  padding: 0.25em 0.45em;
+}
