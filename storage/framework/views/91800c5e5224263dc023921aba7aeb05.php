@@ -18,11 +18,11 @@
 
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Admin</a></li>
-            @guest
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(route('admin.dashboard')); ?>">Admin</a></li>
+            <?php if(auth()->guard()->guest()): ?>
                 <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-            @endguest
+            <?php endif; ?>
         </ul>
 
         <div class="d-flex align-items-center gap-3">
@@ -37,7 +37,7 @@
 
             <a href="#" class="navbar-icon-btn ms-2 position-relative" aria-label="Wishlist">
             <i class="bi bi-heart fs-5"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle badge-wishlist">{{-- Put the number here --}}</span>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle badge-wishlist"></span>
             </a>
 
             <a href="#" class="navbar-icon-btn ms-2" aria-label="Cart"><i class="bi bi-cart3 fs-5"></i></a>
@@ -48,3 +48,4 @@
 
     </div>
 </nav>
+<?php /**PATH C:\Users\Gergs\Documents\Codex\2026-08-10\5-5\work\hardware-components-main\hardware-components-main\resources\views/components/layout/nav.blade.php ENDPATH**/ ?>
