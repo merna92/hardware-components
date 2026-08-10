@@ -34,7 +34,7 @@
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle badge-wishlist">{{-- Put the number here --}}</span>
             </a>
 
-            <a href="#" class="navbar-icon-btn ms-2"><i class="bi bi-cart3 fs-5"></i></a>
+            <a href="/cart" class="navbar-icon-btn ms-2"><i class="bi bi-cart3 fs-5"></i></a>
             <a href="#" class="navbar-icon-btn ms-2"><i class="bi bi-person fs-5"></i></a>
         </div>
 
