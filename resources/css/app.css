@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./components/_nav.css";
 @import "./components/_footer.css";
+@import "./components/_catalog.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

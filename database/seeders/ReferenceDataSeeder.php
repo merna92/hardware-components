@@ -24,13 +24,7 @@ class ReferenceDataSeeder extends Seeder
             );
         }
 
-        $brands = ['Intel', 'AMD', 'NVIDIA', 'ASUS', 'MSI', 'Gigabyte', 'Corsair', 'Kingston', 'Samsung', 'Western Digital'];
-
-        foreach ($brands as $brand) {
-            DB::table('brands')->updateOrInsert(
-                ['brand_name' => $brand],
-                ['created_at' => $now, 'updated_at' => $now]
-            );
-        }
+        // The brands table was intentionally removed from this team version.
+        // Keep the reference seeder limited to the active schema.
     }
 }
