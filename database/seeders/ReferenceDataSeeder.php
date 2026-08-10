@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ReferenceDataSeeder extends Seeder
 {
@@ -26,11 +27,14 @@ class ReferenceDataSeeder extends Seeder
 
         $brands = ['Intel', 'AMD', 'NVIDIA', 'ASUS', 'MSI', 'Gigabyte', 'Corsair', 'Kingston', 'Samsung', 'Western Digital'];
 
-        foreach ($brands as $brand) {
-            DB::table('brands')->updateOrInsert(
-                ['brand_name' => $brand],
-                ['created_at' => $now, 'updated_at' => $now]
-            );
+        // Only insert brands if the `brands` table exists. Some migrations may omit brands.
+        if (Schema::hasTable('brands')) {
+            foreach ($brands as $brand) {
+                DB::table('brands')->updateOrInsert(
+                    ['brand_name' => $brand],
+                    ['created_at' => $now, 'updated_at' => $now]
+                );
+            }
         }
     }
 }

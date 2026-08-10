@@ -1,51 +1,3 @@
-.cart-table-header {
-  background-color: var(--color-primary);
-  box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 1.25rem 2rem;
-  font-weight: 500;
-  color: var(--color-text2);
-}
-
-.cart-item-card {
-  background-color: var(--color-primary);
-  box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 1.25rem 2rem;
-  margin-top: 24px;
-  color: var(--color-text2);
-}
-
-.cart-item-img {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  display: inline-block;
-}
-
-.cart-item-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.cart-remove-icon {
-  position: absolute;
-  top: -6px;
-  left: -6px;
-  background-color: var(--color-button2);
-  color: var(--color-primary);
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .quantity-input {
   width: 72px;
   padding: 6px 12px;
@@ -70,14 +22,6 @@
   color: var(--color-primary) !important;
 }
 
-/* الكوبون */
-.coupon-input {
-  border: 1px solid var(--color-text2) !important;
-  border-radius: 4px;
-  padding: 12px 24px;
-  max-width: 300px;
-}
-
 .btn-danger-custom {
   background-color: var(--color-button2) !important;
   color: var(--color-primary);
@@ -92,7 +36,6 @@
   background-color: var(--color-secondary-2) !important;
 }
 
-/* بطاقة إجمالي السلة Cart Total Box */
 .cart-total-box {
   border: 1.5px solid var(--color-text2);
   border-radius: 4px;
