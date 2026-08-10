@@ -41,26 +41,28 @@ Route::middleware('auth')->group(function () {
 
     // Update Profile Information
      Route::post('/profile/update', function (Request $request) {
-        $user = auth()->user();
+    $user = auth()->user();
 
-        $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name'  => ['required', 'string', 'max:255'],
-            'email'      => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'phone'      => ['nullable', 'string', 'max:20'],
-            'address'    => ['nullable', 'string', 'max:500'],
-        ]);
+    $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name'  => ['required', 'string', 'max:255'],
+        'email'      => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        'phone'      => ['nullable', 'string', 'regex:/^(010|011|012|015)[0-9]{8}$/'],
+        'address'    => ['nullable', 'string', 'max:500'],
+    ], [
+        'phone.regex' => 'Please enter a valid Egyptian mobile number (e.g. 01012345678).',
+    ]);
 
-        $user->update([
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'email'      => $request->email,
-            'phone'      => $request->phone,
-            'address'    => $request->address,
-        ]);
+    $user->update([
+        'first_name' => $request->first_name,
+        'last_name'  => $request->last_name,
+        'email'      => $request->email,
+        'phone'      => $request->phone,
+        'address'    => $request->address,
+    ]);
 
-        return redirect()->back()->with('success', 'Profile updated successfully!');
-    })->name('profile.update');
+    return redirect()->back()->with('success', 'Profile updated successfully!');
+})->name('profile.update');
 
     // Wishlist Routes
     Route::get('/wishlist', [\App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist.index');
