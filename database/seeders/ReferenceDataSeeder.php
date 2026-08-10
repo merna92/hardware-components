@@ -24,13 +24,6 @@ class ReferenceDataSeeder extends Seeder
             );
         }
 
-        $brands = ['Intel', 'AMD', 'NVIDIA', 'ASUS', 'MSI', 'Gigabyte', 'Corsair', 'Kingston', 'Samsung', 'Western Digital'];
-
-        foreach ($brands as $brand) {
-            DB::table('brands')->updateOrInsert(
-                ['brand_name' => $brand],
-                ['created_at' => $now, 'updated_at' => $now]
-            );
-        }
+        // Brands table is currently disabled in the migration.
     }
 }
