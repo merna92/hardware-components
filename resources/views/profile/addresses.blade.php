@@ -36,10 +36,19 @@
                     <div>
                         <a href="/wishlist" class="text-decoration-none fw-bold h6 d-block mb-0 text-dark hover-link">My WishList</a>
                     </div>
-
+                           <!-- Section 4: Logout -->
+                    <div class="mt-4 pt-3 border-top">
+                        <form action="{{ route('logout') }}" method="POST" class="m-0 p-0">
+                            @csrf
+                            <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0 bg-transparent fw-bold h6 d-flex align-items-center gap-2 hover-link text-decoration-none">
+                                <i class="bi bi-box-arrow-right fs-5"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
+                     
             <!-- Right Address Book Main Card -->
             <div class="col-lg-9">
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
@@ -152,7 +161,7 @@
             </div>
         </div>
     </div>
-
+  
     <style>
         .hover-link:hover { color: #dc3545 !important; }
         .hover-red-btn { transition: background-color 0.2s ease; }

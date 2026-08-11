@@ -43,7 +43,16 @@
                     <div>
                         <a href="/wishlist" class="text-decoration-none fw-bold h6 d-block mb-0 text-dark hover-link">My WishList</a>
                     </div>
-
+                          <!-- Section 4: Logout -->
+            <div class="mt-4 pt-3 border-top">
+                <form action="{{ route('logout') }}" method="POST" class="m-0 p-0">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0 bg-transparent fw-bold h6 d-flex align-items-center gap-2 hover-link text-decoration-none">
+                        <i class="bi bi-box-arrow-right fs-5"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
                 </div>
             </div>
 
