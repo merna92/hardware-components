@@ -26,7 +26,9 @@ class CatalogController extends Controller
             ->orderBy('category_name')
             ->get();
 
-        return view('catalog.home', compact('featuredProducts', 'categories'));
+        // Render the welcome page which includes the catalog home and the welcome discount modal
+        return view('welcome', compact('featuredProducts', 'categories'));
+
     }
 
     // Catalog page: every filter remains in the URL so pagination does not reset it.
@@ -36,7 +38,7 @@ class CatalogController extends Controller
             'search' => ['nullable', 'string', 'max:100'],
             'category' => ['nullable', 'integer', 'exists:categories,id'],
             'min_price' => ['nullable', 'numeric', 'min:0'],
-            'max_price' => ['nullable', 'numeric', 'min:0', 'gte:min_price'],
+            'max_price' => ['nullable', 'numeric', 'min:0'],
             'sort' => ['nullable', 'in:latest,price_low,price_high,name'],
         ]);
 

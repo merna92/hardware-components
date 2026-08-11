@@ -1,162 +1,135 @@
-<x-layout.layout title="Cart">
-    <main class="container my-4 py-3 md:my-5 md:py-4">
-        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <h1 class="h2 mb-1">Shopping Cart</h1>
-                <p class="text-muted mb-0">Review your selected components.</p>
+<x-layout.layout title="Shopping Cart - Exclusive">
+    <div class="container py-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item active fw-semibold" aria-current="page">Cart</li>
+            </ol>
+        </nav>
+
+        @if(session('success'))
+            <div class="alert alert-success border-0 mb-4 rounded-3">{{ session('success') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger border-0 mb-4 rounded-3">{{ session('error') }}</div>
+        @endif
+
+        @if($cartItems->isEmpty())
+            <div class="card border-0 shadow-sm rounded-4 text-center py-5 bg-white">
+                <div class="card-body">
+                    <i class="bi bi-cart-x fs-1 text-muted"></i>
+                    <h4 class="fw-bold text-dark mt-3">Your Cart is Empty</h4>
+                    <p class="text-muted">Looks like you haven't added any hardware components to your cart yet.</p>
+                    <a href="{{ route('catalog.index') }}" class="btn btn-danger rounded-pill px-4 py-2 mt-2 fw-semibold">Return to Shop</a>
+                </div>
             </div>
-            @if ($cartItems->isNotEmpty())
-                <form method="POST" action="{{ route('cart.clear') }}" class="w-full sm:w-auto">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-custom w-full sm:w-auto">Clear Cart</button>
-                </form>
-            @endif
-        </div>
-
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger">{{ $errors->first() }}</div>
-        @endif
-
-        @if ($cartItems->isEmpty())
-            <section class="cart-total-box text-center py-5">
-                <h2 class="h4">Your cart is empty</h2>
-                <p class="text-muted mb-4">Add products to begin checkout.</p>
-                <a href="/" class="btn btn-danger-custom w-full sm:w-auto">Continue Shopping</a>
-            </section>
         @else
-            <div class="row g-4">
-                <div class="col-12 col-lg-8">
-                    <div class="space-y-3 md:hidden">
-                        @foreach ($cartItems as $item)
-                            <article class="cart-total-box bg-white p-3">
-                                <div class="flex min-w-0 gap-3">
-                                    @if ($item->product->image_url)
-                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->product_name }}" class="h-16 w-16 shrink-0 rounded object-contain" loading="lazy">
-                                    @else
-                                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded bg-gray-100 text-center text-xs text-muted">No image</div>
-                                    @endif
-                                    <div class="min-w-0 flex-1">
-                                        <h2 class="mb-1 break-words text-base font-semibold">{{ $item->product->product_name }}</h2>
-                                        <p class="mb-1 text-sm text-muted">{{ $item->product->stock_quantity }} in stock</p>
-                                        <p class="mb-0 font-semibold">${{ number_format((float) $item->unit_price, 2) }}</p>
+            <div class="table-responsive bg-white shadow-sm rounded-4 p-4 mb-4">
+                <table class="table align-middle border-bottom">
+                    <thead>
+                        <tr class="text-muted small text-uppercase">
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th style="width: 160px;">Quantity</th>
+                            <th>Subtotal</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cartItems as $item)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="{{ $item->product->image_url ?? asset('images/placeholder.png') }}" class="img-fluid rounded-3 object-fit-contain bg-light p-2" style="width: 60px; height: 60px;" alt="{{ $item->product->product_name }}">
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-0">{{ $item->product->product_name }}</h6>
+                                            <small class="text-muted">{{ $item->product->category->category_name ?? '' }}</small>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="mt-4 flex flex-col gap-3 border-top pt-3">
-                                    <form method="POST" action="{{ route('cart.update', $item) }}" class="flex w-full items-center justify-between gap-2">
+                                </td>
+                                <td class="fw-semibold text-dark">${{ number_format($item->unit_price, 2) }}</td>
+                                <td>
+                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center gap-1">
                                         @csrf
                                         @method('PATCH')
-                                        <label class="mb-0 shrink-0 text-sm fw-semibold" for="quantity-{{ $item->id }}">Quantity</label>
-                                        <input class="quantity-input min-w-0" id="quantity-{{ $item->id }}" type="number" name="quantity" min="1" max="{{ $item->product->stock_quantity }}" value="{{ $item->quantity }}" aria-label="Quantity for {{ $item->product->product_name }}">
-                                        <button type="submit" class="btn btn-outline-custom shrink-0 px-3 py-2">Update</button>
+                                        <button type="submit" name="quantity" value="{{ max(1, $item->quantity - 1) }}" class="btn btn-outline-secondary btn-sm px-2 rounded-2">-</button>
+                                        <input type="text" readonly value="{{ $item->quantity }}" class="form-control form-control-sm text-center border-0 fw-bold px-1" style="width: 45px;">
+                                        <button type="submit" name="quantity" value="{{ $item->quantity + 1 }}" class="btn btn-outline-secondary btn-sm px-2 rounded-2">+</button>
                                     </form>
-                                    <div class="flex items-center justify-between gap-3">
-                                        <div>
-                                            <span class="d-block text-sm text-muted">Subtotal</span>
-                                            <span class="fw-bold">${{ number_format((float) $item->unit_price * $item->quantity, 2) }}</span>
-                                        </div>
-                                        <form method="POST" action="{{ route('cart.destroy', $item) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger px-3 py-2" aria-label="Remove {{ $item->product->product_name }}">Remove</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </article>
+                                </td>
+                                <td class="fw-bold text-danger">${{ number_format($item->unit_price * $item->quantity, 2) }}</td>
+                                <td>
+                                    <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-light btn-sm text-danger rounded-circle p-2" title="Remove Item">
+                                            <i class="bi bi-trash fs-6"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                         @endforeach
-                    </div>
+                    </tbody>
+                </table>
 
-                    <div class="hidden md:block">
-                        <div class="table-responsive cart-total-box">
-                            <table class="table align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th class="text-end">Subtotal</th>
-                                        <th><span class="visually-hidden">Actions</span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($cartItems as $item)
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    @if ($item->product->image_url)
-                                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->product_name }}" class="rounded" style="width: 56px; height: 56px; object-fit: contain;" loading="lazy">
-                                                    @endif
-                                                    <div>
-                                                        <div class="fw-semibold">{{ $item->product->product_name }}</div>
-                                                        <small class="text-muted">{{ $item->product->stock_quantity }} in stock</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>${{ number_format((float) $item->unit_price, 2) }}</td>
-                                            <td>
-                                                <form method="POST" action="{{ route('cart.update', $item) }}" class="d-flex align-items-center gap-2">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input class="quantity-input" type="number" name="quantity" min="1" max="{{ $item->product->stock_quantity }}" value="{{ $item->quantity }}" aria-label="Quantity for {{ $item->product->product_name }}">
-                                                    <button type="submit" class="btn btn-sm btn-outline-custom">Update</button>
-                                                </form>
-                                            </td>
-                                            <td class="text-end fw-semibold">${{ number_format((float) $item->unit_price * $item->quantity, 2) }}</td>
-                                            <td class="text-end">
-                                                <form method="POST" action="{{ route('cart.destroy', $item) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="Remove {{ $item->product->product_name }}">Remove</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center pt-2">
+                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-dark rounded-3 px-4 fw-semibold">Return To Shop</a>
+                    <form action="{{ route('cart.clear') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger rounded-3 px-4 fw-semibold">Clear Cart</button>
+                    </form>
                 </div>
+            </div>
 
-                <aside class="col-12 col-lg-4">
-                    <section class="cart-total-box bg-white">
-                        <h2 class="h4 mb-4">Order Summary</h2>
-                        <form method="POST" action="{{ route('coupon.apply') }}" class="mb-3">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3">Apply Coupon</h6>
+                        <form action="{{ route('coupon.apply') }}" method="POST" class="d-flex gap-2">
                             @csrf
-                            <label class="form-label" for="coupon_code">Discount code</label>
-                            <div class="flex flex-col gap-2 sm:flex-row">
-                                <input class="form-control min-w-0" id="coupon_code" name="code" value="{{ old('code') }}" placeholder="SAVE10" {{ $coupon ? 'disabled' : '' }}>
-                                <button class="btn btn-outline-custom w-full shrink-0 sm:w-auto" type="submit" {{ $coupon ? 'disabled' : '' }}>Apply</button>
-                            </div>
+                            <input type="text" name="code" class="form-control rounded-3" placeholder="Coupon Code (e.g. SAVE10)" value="{{ session('coupon_code') }}" required>
+                            <button type="submit" class="btn btn-danger px-4 rounded-3 fw-semibold">Apply</button>
                         </form>
-                        @if ($coupon)
-                            <div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="badge text-bg-success w-fit">{{ $coupon->code }} Applied</span>
-                                <form method="POST" action="{{ route('coupon.remove') }}" class="w-full sm:w-auto">
+                        @if($coupon)
+                            <div class="mt-3 p-3 bg-light rounded-3 d-flex justify-content-between align-items-center">
+                                <span class="text-success fw-semibold"><i class="bi bi-check-circle me-1"></i> Coupon <strong>{{ $coupon->code }}</strong> Applied!</span>
+                                <form action="{{ route('coupon.remove') }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger w-full sm:w-auto" type="submit">Remove</button>
+                                    <button type="submit" class="btn btn-link btn-sm text-danger p-0 text-decoration-none fw-bold">Remove</button>
                                 </form>
                             </div>
                         @endif
-                        <div class="total-row"><span>Subtotal</span><span>${{ number_format($totals['subtotal'], 2) }}</span></div>
-                        @if ($totals['discount'] > 0)
-                            <div class="total-row text-success"><span>Discount</span><span>−${{ number_format($totals['discount'], 2) }}</span></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-4">Cart Total</h5>
+                        <div class="d-flex justify-content-between pb-3 mb-3 border-bottom">
+                            <span class="text-muted">Subtotal:</span>
+                            <span class="fw-bold text-dark">${{ number_format($totals['subtotal'], 2) }}</span>
+                        </div>
+                        @if($totals['discount'] > 0)
+                            <div class="d-flex justify-content-between pb-3 mb-3 border-bottom text-success">
+                                <span>Discount:</span>
+                                <span class="fw-bold">-${{ number_format($totals['discount'], 2) }}</span>
+                            </div>
                         @endif
-                        <div class="total-row"><span>Tax (14%)</span><span>${{ number_format($totals['tax'], 2) }}</span></div>
-                        <div class="d-flex justify-content-between pt-3 mt-2 fw-bold fs-5"><span>Total</span><span>${{ number_format($totals['total'], 2) }}</span></div>
-                        <a class="btn btn-danger-custom mt-4 block w-full text-center" href="{{ route('checkout.index') }}">Proceed to Checkout</a>
-                    </section>
-                </aside>
+                        <div class="d-flex justify-content-between pb-3 mb-3 border-bottom">
+                            <span class="text-muted">Estimated Tax (14%):</span>
+                            <span class="fw-bold text-dark">${{ number_format($totals['tax'], 2) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between pb-4 mb-4 border-bottom">
+                            <span class="fw-bold text-dark fs-5">Total:</span>
+                            <span class="fw-bold text-danger fs-4">${{ number_format($totals['total'], 2) }}</span>
+                        </div>
+                        <a href="{{ route('checkout.index') }}" class="btn btn-danger w-100 rounded-3 py-3 fw-bold fs-6">Proceed to Checkout</a>
+                    </div>
+                </div>
             </div>
         @endif
-    </main>
+    </div>
 </x-layout.layout>

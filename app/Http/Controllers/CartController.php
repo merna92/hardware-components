@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Coupon;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,34 @@ class CartController extends Controller
             'totals' => $totals,
             'coupon' => $this->coupon(),
         ]);
+    }
+
+    public function add(Request $request, int $productId): RedirectResponse
+    {
+        $product = Product::findOrFail($productId);
+        $qty = (int) $request->input('quantity', 1);
+
+        if ($product->stock_quantity < $qty) {
+            return back()->with('error', 'Requested quantity is not available in stock.');
+        }
+
+        $userId = Auth::id();
+        $cart = Cart::firstOrCreate(
+            ['user_id' => $userId, 'status' => 'Active']
+        );
+
+        $item = $cart->items()->where('product_id', $product->id)->first();
+        if ($item) {
+            $item->increment('quantity', $qty);
+        } else {
+            $cart->items()->create([
+                'product_id' => $product->id,
+                'quantity' => $qty,
+                'unit_price' => $product->price,
+            ]);
+        }
+
+        return back()->with('success', 'Product added to cart successfully!');
     }
 
     public function update(Request $request, int $id): RedirectResponse
@@ -73,8 +102,12 @@ class CartController extends Controller
 
     private function activeCart(): ?Cart
     {
+        if (!Auth::check()) {
+            return null;
+        }
+
         return Cart::query()
-            ->where('user_id', $this->userId())
+            ->where('user_id', Auth::id())
             ->where('status', 'Active')
             ->latest('id')
             ->first();
@@ -82,20 +115,17 @@ class CartController extends Controller
 
     private function ownedItem(int $id): ?CartItem
     {
+        if (!Auth::check()) {
+            return null;
+        }
+
         return CartItem::query()
             ->with('product')
             ->whereKey($id)
             ->whereHas('cart', fn ($query) => $query
-                ->where('user_id', $this->userId())
+                ->where('user_id', Auth::id())
                 ->where('status', 'Active'))
             ->first();
-    }
-
-    private function userId(): int
-    {
-        return Auth::id() ?? (int) \App\Models\User::query()
-            ->where('email', 'test@example.com')
-            ->value('id');
     }
 
     private function coupon(): ?Coupon

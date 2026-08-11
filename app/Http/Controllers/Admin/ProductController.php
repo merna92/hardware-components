@@ -36,10 +36,32 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
-        if (! empty($validated['image_url'])) {
+        if ($request->hasFile('images')) {
+            $isFirst = true;
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
+                
+                // If it's the first image, also save it to the product's image_url
+                if ($isFirst) {
+                    $product->update(['image_url' => $path]);
+                }
+                
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_url' => $path,
+                    'alt_text' => $product->product_name,
+                    'is_primary' => $isFirst,
+                    'uploaded_at' => now(),
+                ]);
+                $isFirst = false;
+            }
+        } elseif ($request->hasFile('image')) {
+            // Fallback for single image input if it still exists
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image_url' => $path]);
             ProductImage::create([
                 'product_id' => $product->id,
-                'image_url' => $validated['image_url'],
+                'image_url' => $path,
                 'alt_text' => $product->product_name,
                 'is_primary' => true,
                 'uploaded_at' => now(),
@@ -62,7 +84,7 @@ class ProductController extends Controller
         $validated = $this->validateProduct($request);
 
         if ($request->hasFile('image')) {
-            if ($product->image_url) {
+            if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
                 Storage::disk('public')->delete($product->image_url);
             }
 
@@ -71,11 +93,44 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        if (! empty($validated['image_url'])) {
+        if ($request->hasFile('images')) {
+            // Delete old images if new ones are uploaded
+            foreach ($product->images as $img) {
+                if (Storage::disk('public')->exists($img->image_url)) {
+                    Storage::disk('public')->delete($img->image_url);
+                }
+                $img->delete();
+            }
+
+            $isFirst = true;
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
+                
+                if ($isFirst) {
+                    $product->update(['image_url' => $path]);
+                }
+
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_url' => $path,
+                    'alt_text' => $product->product_name,
+                    'is_primary' => $isFirst,
+                    'uploaded_at' => now(),
+                ]);
+                $isFirst = false;
+            }
+        } elseif ($request->hasFile('image')) {
+            // Fallback for single image upload
+            if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
+                Storage::disk('public')->delete($product->image_url);
+            }
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image_url' => $path]);
+            
             ProductImage::updateOrCreate(
                 ['product_id' => $product->id, 'is_primary' => true],
                 [
-                    'image_url' => $validated['image_url'],
+                    'image_url' => $path,
                     'alt_text' => $product->product_name,
                     'uploaded_at' => now(),
                 ]
@@ -104,6 +159,8 @@ class ProductController extends Controller
             'release_date' => ['nullable', 'date'],
             'status' => ['required', 'in:Available,Out_Of_Stock,Discontinued,Coming_Soon,Hidden'],
             'image' => ['nullable', 'image', 'max:2048'],
+            'images.*' => ['nullable', 'image', 'max:2048'],
+            'images' => ['nullable', 'array', 'max:4'],
         ]);
     }
 

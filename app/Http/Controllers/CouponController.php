@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Coupon;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,10 +41,12 @@ class CouponController extends Controller
 
     private function subtotal(): float
     {
+        if (!Auth::check()) {
+            return 0;
+        }
+
         $cart = Cart::query()
-            ->where('user_id', Auth::id() ?? (int) User::query()
-                ->where('email', 'test@example.com')
-                ->value('id'))
+            ->where('user_id', Auth::id())
             ->where('status', 'Active')
             ->latest('id')
             ->first();

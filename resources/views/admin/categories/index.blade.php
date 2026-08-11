@@ -1,59 +1,50 @@
-<x-layout title="Admin Categories">
-    <main class="container py-5">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+<x-layout.layout title="Categories Management - Admin">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-dark mb-0">Categories Management</h3>
             <div>
-                <h1 class="h3 fw-bold mb-1"><span class="exclusive-pill"></span>Categories</h1>
-                <p class="text-muted mb-0">Organize hardware components into clear groups.</p>
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-danger rounded-pill px-4 fw-semibold me-2">+ Add Category</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4">Dashboard</a>
             </div>
-            <a href="{{ route('admin.categories.create') }}" class="btn btn-exclusive">
-                <i class="bi bi-plus-circle me-1"></i> Add Category
-            </a>
         </div>
 
-        @include('admin.partials.alerts')
+        @if(session('success'))
+            <div class="alert alert-success border-0 mb-4">{{ session('success') }}</div>
+        @endif
 
-        <div class="card admin-card-exclusive">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
             <div class="table-responsive">
-                <table class="table admin-table-exclusive align-middle mb-0">
+                <table class="table align-middle">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Products</th>
-                            <th class="text-end">Actions</th>
+                            <th>Products Count</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($categories as $category)
+                        @foreach($categories as $category)
                             <tr>
                                 <td>{{ $category->id }}</td>
-                                <td class="fw-semibold">{{ $category->category_name }}</td>
-                                <td>{{ $category->description ?? 'N/A' }}</td>
-                                <td>{{ $category->products_count }}</td>
-                                <td class="text-end">
-                                    <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                <td class="fw-bold">{{ $category->category_name }}</td>
+                                <td class="text-muted">{{ Str::limit($category->description, 50) }}</td>
+                                <td><span class="badge bg-secondary px-3 py-2 fs-7">{{ $category->products_count }} products</span></td>
+                                <td>
+                                    <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-outline-dark me-2">Edit</a>
                                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this category?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete category?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-4">No categories found.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">{{ $categories->links() }}</div>
         </div>
-
-        <div class="mt-4">{{ $categories->links('pagination::bootstrap-5') }}</div>
-    </main>
-</x-layout>
+    </div>
+</x-layout.layout>

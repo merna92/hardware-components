@@ -1,19 +1,25 @@
-<x-layout title="Create Coupon">
-    <div class="admin-page">
-        <div class="container">
-            <div class="admin-breadcrumb">Home / Admin / Coupons / Create</div>
+<x-layout.layout title="Create Coupon - Admin">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                    <h4 class="fw-bold mb-4">Create New Coupon</h4>
 
-            <div class="admin-title-row">
-                <h2>Create Coupon</h2>
+                    @if($errors->any())
+                        <div class="alert alert-danger mb-4">{{ $errors->first() }}</div>
+                    @endif
+
+                    <form action="{{ route('admin.coupons.store') }}" method="POST">
+                        @csrf
+                        @include('admin.coupons.form')
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-danger px-4 fw-semibold">Save Coupon</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <form action="{{ route('admin.coupons.store') }}" method="POST" class="admin-form">
-                @csrf
-                @include('admin.coupons.form')
-
-                <button class="btn btn-dark mt-4 px-4" type="submit">Save Coupon</button>
-                <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-dark mt-4 px-4">Cancel</a>
-            </form>
         </div>
     </div>
-</x-layout>
+</x-layout.layout>

@@ -1,115 +1,78 @@
-<x-layout.layout title="Create an Account - Hardware Components">
+<x-layout.layout title="Create an Account - Exclusive">
     <div class="container py-5">
-        <div class="row justify-content-center align-items-center my-4">
-            <div class="col-12 col-md-8 col-lg-5">
-                <!-- Card Container -->
-                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
-                    
-                    <!-- Header Title -->
-                    <div class="text-center mb-4">
-                        <h2 class="fw-bold text-dark mb-1">Create an Account</h2>
-                        <p class="text-secondary small mb-0">Enter your details to register as a new member</p>
-                    </div>
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white text-center">
+                    <h2 class="fw-bold text-dark mb-1">{{ __('Create an Account') }}</h2>
+                    <p class="text-muted small mb-4">{{ __('Enter your details to register as a new member') }}</p>
 
-                    <!-- Registration Form Start -->
-                    <form action="{{ route('register') }}" method="POST" novalidate>
+                    @if($errors->any())
+                        <div class="alert alert-danger border-0 rounded-3 text-start mb-4">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('register') }}" method="POST" class="text-start">
                         @csrf
 
-                        <!-- Full Name Input -->
                         <div class="mb-3">
-                            <label for="name" class="form-label fw-medium text-dark small mb-1">Full Name</label>
-                            <input type="text" name="name" id="name" class="form-control rounded-3 py-2.5 px-3 @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="e.g. John Doe" required>
-                            @error('name')
-                                <div class="invalid-feedback small">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label small fw-semibold text-dark">{{ __('Full Name') }}</label>
+                            <input type="text" name="name" class="form-control rounded-3 py-2 px-3" placeholder="{{ __('Full Name') }}" value="{{ old('name') }}" required>
                         </div>
 
-                        <!-- Email Address Input -->
                         <div class="mb-3">
-                            <label for="email" class="form-label fw-medium text-dark small mb-1">Email Address</label>
-                            <input type="email" name="email" id="email" class="form-control rounded-3 py-2.5 px-3 @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="e.g. name@example.com" required>
-                            @error('email')
-                                <div class="invalid-feedback small">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label small fw-semibold text-dark">{{ __('Email Address') }}</label>
+                            <input type="email" name="email" class="form-control rounded-3 py-2 px-3" placeholder="{{ __('Email Address') }}" value="{{ old('email') }}" required>
                         </div>
 
-                        <!-- Phone Number Input -->
                         <div class="mb-3">
-                            <label for="phone" class="form-label fw-medium text-dark small mb-1">Phone Number</label>
-                            <input type="text" name="phone" id="phone" class="form-control rounded-3 py-2.5 px-3 @error('phone') is-invalid @enderror" value="{{ old('phone') }}" placeholder="e.g. 01012345678" required>
-                            @error('phone')
-                                <div class="invalid-feedback small">{{ $message }}</div>
-                            @enderror
+                            <label class="form-label small fw-semibold text-dark">{{ __('Phone Number') }}</label>
+                            <input type="text" name="phone" class="form-control rounded-3 py-2 px-3" placeholder="{{ __('Phone Number') }}" value="{{ old('phone') }}">
                         </div>
 
-                        <!-- Password Input -->
                         <div class="mb-3">
-                            <label for="password" class="form-label fw-medium text-dark small mb-1">Password</label>
+                            <label class="form-label small fw-semibold text-dark">{{ __('Password') }}</label>
                             <div class="input-group">
-                                <input type="password" name="password" id="password" class="form-control rounded-start-3 py-2.5 px-3 @error('password') is-invalid @enderror" placeholder="Enter password" required>
-                                <button class="btn btn-outline-secondary rounded-end-3 px-3 border-start-0" type="button" onclick="togglePassword('password', this)">
-                                    <i class="bi bi-eye-slash"></i>
+                                <input type="password" name="password" id="reg_password" class="form-control rounded-start-3 py-2 px-3 border-end-0" placeholder="{{ __('Enter password') }}" required>
+                                <button class="btn btn-outline-secondary rounded-end-3 border-start-0 bg-white" type="button" onclick="togglePass('reg_password', this)">
+                                    <i class="bi bi-eye-slash text-muted"></i>
                                 </button>
                             </div>
-                            <!-- Password Helper Text -->
-                            <div class="form-text text-muted small mt-1" style="font-size: 0.78rem;">
-                                Must be at least 8 characters with letters, numbers & symbols (e.g. @, #, ?).
-                            </div>
-                            @error('password')
-                                <div class="text-danger small mt-1" style="font-size: 0.8rem;">{{ $message }}</div>
-                            @enderror
+                            <small class="text-muted d-block mt-1 fs-7">{{ __('Must be at least 8 characters with letters, numbers & symbols (e.g. @, #, ?).') }}</small>
                         </div>
 
-                        <!-- Confirm Password Input -->
                         <div class="mb-4">
-                            <label for="password_confirmation" class="form-label fw-medium text-dark small mb-1">Confirm Password</label>
+                            <label class="form-label small fw-semibold text-dark">{{ __('Confirm Password') }}</label>
                             <div class="input-group">
-                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control rounded-start-3 py-2.5 px-3" placeholder="Re-enter password" required>
-                                <button class="btn btn-outline-secondary rounded-end-3 px-3 border-start-0" type="button" onclick="togglePassword('password_confirmation', this)">
-                                    <i class="bi bi-eye-slash"></i>
+                                <input type="password" name="password_confirmation" id="reg_password_confirmation" class="form-control rounded-start-3 py-2 px-3 border-end-0" placeholder="{{ __('Re-enter password') }}" required>
+                                <button class="btn btn-outline-secondary rounded-end-3 border-start-0 bg-white" type="button" onclick="togglePass('reg_password_confirmation', this)">
+                                    <i class="bi bi-eye-slash text-muted"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Submit Button (Theme Red) -->
-                        <button type="submit" class="btn btn-danger w-100 py-2.5 fw-semibold mb-3 rounded-3 hover-red-btn shadow-sm">Register Now</button>
+                        <button type="submit" class="btn btn-danger w-100 rounded-3 py-3 fw-bold mb-3">{{ __('Register Now') }}</button>
 
-                        <!-- Sign In Redirection Link -->
-                        <div class="text-center">
-                            <span class="text-secondary small">Already have an account?</span>
-                            <a href="{{ route('login') }}" class="text-danger fw-semibold small text-decoration-none ms-1 hover-link">Sign In</a>
+                        <div class="text-center text-muted small">
+                            {{ __('Already have an account?') }} <a href="{{ route('login') }}" class="text-danger fw-semibold text-decoration-none">{{ __('Log in') }}</a>
                         </div>
                     </form>
-                    <!-- Registration Form End -->
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Toggle Password Visibility Script -->
     <script>
-    function togglePassword(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const icon = btn.querySelector('i');
-        
-        if (input.type === "password") {
-            input.type = "text";
-            icon.className = "bi bi-eye";
-        } else {
-            input.type = "password";
-            icon.className = "bi bi-eye-slash";
+        function togglePass(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
         }
-    }
     </script>
-
-    <style>
-        .hover-link:hover { color: #dc3545 !important; }
-        .hover-red-btn { transition: background-color 0.2s ease; }
-        .hover-red-btn:hover { background-color: #e62e04 !important; }
-        .form-control:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.15);
-        }
-    </style>
 </x-layout.layout>

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,34 +13,41 @@ class Coupon extends Model
         'code',
         'type',
         'value',
-        'expires_at',
-        'is_active',
+        'start_date',
+        'end_date',
+        'usage_limit',
+        'used_count',
+        'status',
     ];
 
     protected function casts(): array
     {
         return [
             'value' => 'decimal:2',
-            'expires_at' => 'datetime',
-            'is_active' => 'boolean',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'usage_limit' => 'integer',
+            'used_count' => 'integer',
         ];
     }
 
-    public function scopeUsable(Builder $query): Builder
+    public function scopeUsable($query)
     {
-        return $query
-            ->where('is_active', true)
-            ->where(fn (Builder $query) => $query
-                ->whereNull('expires_at')
-                ->orWhere('expires_at', '>', now()));
+        return $query->where('status', 'Active')
+            ->where(function ($q) {
+                $q->whereNull('start_date')->orWhere('start_date', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('end_date')->orWhere('end_date', '>=', now());
+            });
     }
 
     public function discountFor(float $subtotal): float
     {
-        $discount = $this->type === 'percent'
-            ? $subtotal * ((float) $this->value / 100)
-            : (float) $this->value;
+        if ($this->type === 'Percentage') {
+            return round(($subtotal * (float) $this->value) / 100, 2);
+        }
 
-        return round(min($subtotal, max(0, $discount)), 2);
+        return min($subtotal, (float) $this->value);
     }
 }

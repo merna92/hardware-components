@@ -1,20 +1,25 @@
-<x-layout title="Add Product">
-    <main class="container py-5">
-        <div class="mb-4">
-            <a href="{{ route('admin.products.index') }}" class="text-decoration-none text-muted">
-                <i class="bi bi-arrow-left"></i> Back to products
-            </a>
-            <h1 class="h3 fw-bold mt-2"><span class="exclusive-pill"></span>Add Product</h1>
-        </div>
+<x-layout.layout title="Create Product - Admin">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                    <h4 class="fw-bold mb-4">Create New Product</h4>
 
-        @include('admin.partials.alerts')
+                    @if($errors->any())
+                        <div class="alert alert-danger mb-4">{{ $errors->first() }}</div>
+                    @endif
 
-        <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data" class="card admin-card-exclusive">
-            @csrf
-            <div class="card-body">
-                @include('admin.products.form', ['product' => null])
-                <button class="btn btn-exclusive">Save</button>
+                    <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @include('admin.products.form')
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-danger px-4 fw-semibold">Save Product</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-    </main>
-</x-layout>
+        </div>
+    </div>
+</x-layout.layout>

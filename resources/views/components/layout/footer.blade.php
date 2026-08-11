@@ -1,58 +1,66 @@
-<footer class="custom-footer">
+<footer class="custom-footer bg-dark text-white pt-5 pb-3">
     <div class="container">
         <div class="row g-4">
 
-        <div class="col-12 col-md-3">
-            <h5>Exclusive</h5>
-            <h6>Subscribe</h6>
-            <p class="text-muted-custom mt-3">Get 10% off your first order</p>
-            <form class="footer-subscribe">
-                <input type="email" placeholder="Enter your email">
-                <button type="button"><i class="bi bi-send"></i></button>
-            </form>
-        </div>
-
-        <div class="col-12 col-md-3">
-            <h5>Support</h5>
-            <ul class="text-muted-custom">
-            <li class="mb-2">111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.</li>
-            <li class="mb-2">exclusive@gmail.com</li>
-            <li>+88015-88888-9999</li>
-            </ul>
-        </div>
-
-        <div class="col-12 col-md-3">
-            <h5>Account</h5>
-            <ul>
-            <li><a href="#">My Account</a></li>
-            <li><a href="#">Login / Register</a></li>
-            <li><a href="#">Cart</a></li>
-            <li><a href="#">Wishlist</a></li>
-            <li><a href="#">Shop</a></li>
-            </ul>
-        </div>
-
-        <div class="col-12 col-md-3">
-            <h5>Quick Link</h5>
-            <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms Of Use</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li class="mb-4"><a href="#">Contact</a></li>
-            </ul>
-
-            <div class="d-flex gap-3 mt-3">
-            <a href="#" class="social-icon-btn"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="social-icon-btn"><i class="bi bi-twitter-x"></i></a>
-            <a href="#" class="social-icon-btn"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="social-icon-btn"><i class="bi bi-linkedin"></i></a>
+            <div class="col-12 col-md-3">
+                <h5 class="fw-bold text-white mb-3 silica-brand-text-footer">{{ app()->getLocale() == 'ar' ? 'سيلكا' : 'SILICA' }}</h5>
+                <p class="text-secondary fs-6">{{ __('High quality computer hardware components for your custom PC builds and gaming setup.') }}</p>
             </div>
-        </div>
+
+            <div class="col-12 col-md-3">
+                <h5 class="fw-bold text-white mb-3">{{ __('Support') }}</h5>
+                <ul class="list-unstyled text-secondary fs-6">
+                    <li class="mb-2"><i class="bi bi-geo-alt text-danger me-2"></i>111 Cairo Tech Hub, Egypt</li>
+                    <li class="mb-2"><i class="bi bi-envelope text-danger me-2"></i>support@silica.com</li>
+                    <li><i class="bi bi-telephone text-danger me-2"></i>+8801611112222</li>
+                </ul>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <h5 class="fw-bold text-white mb-3">{{ __('Account') }}</h5>
+                <ul class="list-unstyled d-flex flex-column gap-2 fs-6">
+                    <li><a href="{{ route('profile') }}" class="text-secondary text-decoration-none hover-white">{{ __('My Account') }}</a></li>
+                    <li><a href="{{ route('login') }}" class="text-secondary text-decoration-none hover-white">{{ __('Login / Register') }}</a></li>
+                    <li><a href="{{ route('cart.index') }}" class="text-secondary text-decoration-none hover-white">{{ __('Cart') }}</a></li>
+                    <li><a href="{{ route('wishlist.index') }}" class="text-secondary text-decoration-none hover-white">{{ __('Wishlist') }}</a></li>
+                    <li><a href="{{ route('catalog.index') }}" class="text-secondary text-decoration-none hover-white">{{ __('Catalog') }}</a></li>
+                </ul>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <h5 class="fw-bold text-white mb-3">{{ __('Quick Links') }}</h5>
+                <ul class="list-unstyled d-flex flex-column gap-2 fs-6 mb-4">
+                    <li><a href="{{ route('contact') }}" class="text-secondary text-decoration-none hover-white">{{ __('Contact Us') }}</a></li>
+                    <li><a href="{{ route('about') }}" class="text-secondary text-decoration-none hover-white">{{ __('About Us') }}</a></li>
+                </ul>
+
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
 
         </div>
 
-        <div class="footer-bottom">
-        <p class="mb-0">&copy; Copyright 2026. All right reserved</p>
+        <div class="border-top border-secondary mt-5 pt-3 text-center text-secondary fs-7">
+            <p class="mb-0">&copy; Copyright {{ date('Y') }} Hardware Components. {{ __('All rights reserved.') }}</p>
         </div>
     </div>
 </footer>
+
+<style>
+    .hover-white:hover { color: white !important; }
+    .silica-brand-text-footer {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    [dir="rtl"] .silica-brand-text-footer {
+        font-family: 'Orbitron', 'Cairo', sans-serif;
+    }
+</style>

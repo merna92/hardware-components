@@ -1,138 +1,52 @@
-<x-layout.layout title="My Returns">
+<x-layout.layout title="My Returns - Hardware Components">
     <div class="container py-5">
-        
-        <div class="row g-5">
-            
-            <!-- Left Minimal Navigation Sidebar -->
+        <div class="row g-4">
             <div class="col-lg-3">
-                <div class="pe-lg-3">
-                    
-                    <!-- Section 1: Manage My Account -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3 text-dark">Manage My Account</h6>
-                        <ul class="list-unstyled ps-3 mb-0 d-flex flex-column gap-2">
-                            <li>
-                                <a href="/profile" class="text-decoration-none text-secondary hover-link">My Profile</a>
-                            </li>
-                            <li>
-                                <a href="/addresses" class="text-decoration-none text-secondary hover-link">Address Book</a>
-                            </li>
-                            <li>
-                                <a href="/payments" class="text-decoration-none text-secondary hover-link">My Payment Options</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 2: My Orders -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3 text-dark">My Orders</h6>
-                        <ul class="list-unstyled ps-3 mb-0 d-flex flex-column gap-2">
-                            <li>
-                                <a href="/orders" class="text-decoration-none text-secondary hover-link">My Orders History</a>
-                            </li>
-                            <li>
-                                <a href="/returns" class="text-decoration-none fw-medium text-danger">My Returns</a>
-                            </li>
-                            <li>
-                                <a href="/cancellations" class="text-decoration-none text-secondary hover-link">My Cancellations</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 3: My WishList -->
-                    <div>
-                        <a href="/wishlist" class="text-decoration-none fw-bold h6 d-block mb-0 text-dark hover-link">My WishList</a>
-                    </div>
-                          <!-- Section 4: Logout -->
-            <div class="mt-4 pt-3 border-top">
-                <form action="{{ route('logout') }}" method="POST" class="m-0 p-0">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0 bg-transparent fw-bold h6 d-flex align-items-center gap-2 hover-link text-decoration-none">
-                        <i class="bi bi-box-arrow-right fs-5"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
-            </div>
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h6 class="fw-bold mb-3 text-dark">{{ __('My Orders') }}</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 fs-6">
+                        <li><a href="{{ route('orders.index') }}" class="text-decoration-none text-secondary">{{ __('My Orders') }}</a></li>
+                        <li><a href="{{ route('returns.index') }}" class="text-decoration-none fw-semibold text-danger">{{ __('My Returns') }}</a></li>
+                        <li><a href="{{ route('cancellations.index') }}" class="text-decoration-none text-secondary">{{ __('My Cancellations') }}</a></li>
+                    </ul>
                 </div>
             </div>
-
-            <!-- Right Returns Content -->
             <div class="col-lg-9">
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
-                    
-                    <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
-                        <h5 class="fw-bold mb-0 text-danger">My Returns</h5>
-                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-normal">
-                            Total Returns: {{ $returns->count() }}
-                        </span>
-                    </div>
+                    <h4 class="fw-bold mb-4 text-dark">{{ __('My Returns') }}</h4>
 
-                    @if($returns->isEmpty())
-                        <!-- Empty State for Returns -->
-                        <div class="text-center py-5">
-                            <div class="mb-3">
-                                <i class="bi bi-arrow-return-left display-1 text-secondary opacity-50"></i>
-                            </div>
-                            <h5 class="fw-bold text-dark mb-2">No returned items</h5>
-                            <p class="text-secondary small mb-4">You have not requested any order returns or refunds yet.</p>
-                            <a href="/orders" class="btn text-white px-4 py-2.5 rounded-2 fw-medium shadow-sm bg-danger border-0 hover-red-btn">
-                                <i class="bi bi-bag-check me-2"></i> View My Orders
-                            </a>
-                        </div>
-                    @else
-                        <!-- Returns List -->
-                        <div class="d-flex flex-column gap-4">
-                            @foreach($returns as $order)
-                                <div class="border rounded-3 p-4 bg-light shadow-sm">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3 pb-3 border-bottom">
-                                        <div>
-                                            <span class="fw-bold text-dark d-block mb-1">Return Request for Order #{{ $order->order_number ?? $order->id }}</span>
-                                            <small class="text-secondary">
-                                                <i class="bi bi-calendar3 me-1"></i> Requested on {{ $order->updated_at->format('M d, Y') }}
-                                            </small>
-                                        </div>
-
-                                        <div class="d-flex align-items-center gap-3">
-                                            <span class="badge bg-warning text-dark border border-warning-subtle px-3 py-2 rounded-pill fw-semibold text-capitalize">
-                                                {{ str_replace('_', ' ', $order->status) }}
-                                            </span>
-
-                                            <span class="fw-bold text-dark fs-5">
-                                                ${{ number_format($order->total_price ?? 0, 2) }}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-2 text-secondary small">
-                                            <i class="bi bi-info-circle fs-5 text-secondary"></i>
-                                            <span>Refund Amount: <strong>${{ number_format($order->total_price ?? 0, 2) }}</strong></span>
-                                        </div>
-
-                                        <span class="badge bg-light text-dark border px-3 py-2 rounded-2 small">
-                                            Status: Processing Refund
-                                        </span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                    @if(session('success'))
+                        <div class="alert alert-success border-0 rounded-3 mb-4">{{ session('success') }}</div>
                     @endif
 
+                    @forelse($orders as $order)
+                        <div class="border rounded-4 p-4 mb-4 bg-light">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <div>
+                                    <span class="fw-bold text-dark me-2">{{ __('Order') }} #{{ $order->id }}</span>
+                                    <small class="text-muted">{{ $order->created_at->format('M d, Y') }}</small>
+                                </div>
+                                <span class="badge {{ $order->status === 'Returned' ? 'bg-dark' : 'bg-danger' }} px-3 py-2 fs-6">{{ __($order->status) }}</span>
+                            </div>
+                            @foreach($order->items as $item)
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>{{ $item->product_snapshot_name ?? 'Product' }} x {{ $item->quantity }}</span>
+                                    <span class="fw-semibold">${{ number_format($item->total_price ?? ($item->unit_price * $item->quantity), 2) }}</span>
+                                </div>
+                            @endforeach
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top fw-bold">
+                                <span>{{ __('Total Amount') }}:</span>
+                                <span class="text-danger fs-5">${{ number_format($order->final_amount ?? $order->total_amount, 2) }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-5">
+                            <i class="bi bi-arrow-return-left fs-1 text-muted"></i>
+                            <p class="mt-3 text-muted fs-5">{{ __('No return requests found.') }}</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
-
         </div>
     </div>
-
-    <style>
-        .hover-link:hover {
-            color: #dc3545 !important;
-        }
-        .hover-red-btn {
-            transition: background-color 0.2s ease;
-        }
-        .hover-red-btn:hover {
-            background-color: #e62e04 !important;
-        }
-    </style>
 </x-layout.layout>

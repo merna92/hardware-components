@@ -1,45 +1,73 @@
-<x-layout title="HardwareHub | Home">
-    <section class="catalog-hero">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <main class="container py-5">
+        <!-- Hero Banner -->
+        <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
+            <div class="row align-items-center position-relative z-1 py-4">
                 <div class="col-lg-7">
-                    <p class="text-uppercase small fw-semibold mb-2">Build better. Play harder.</p>
-                    <h1 class="display-5 fw-bold">The components your next PC needs.</h1>
-                    <p class="lead text-white-50">Browse reliable hardware and find the right part for every build.</p>
-                    <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg px-4">Shop products <i class="bi bi-arrow-right ms-1"></i></a>
+                    <span class="text-danger fw-bold text-uppercase tracking-wider">{{ __('iPhone 14 Series / Hardware Tech') }}</span>
+                    <h1 class="display-4 fw-extrabold text-white mt-2 mb-3">{{ __('Up to 10% off Voucher for Hardware Components') }}</h1>
+                    <p class="text-secondary lead mb-4">{{ __('Discover high performance GPUs, CPUs, Motherboards and NVMe SSDs with official warranty.') }}</p>
+                    <a href="{{ route('catalog.index') }}" class="btn btn-danger btn-lg rounded-pill px-5 fw-bold shadow-sm">
+                        {{ __('Shop Now') }} <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
                 </div>
-                <div class="col-lg-5 text-center d-none d-lg-block"><i class="bi bi-pc-display-horizontal" style="font-size: 10rem"></i></div>
+                <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                    <i class="bi bi-cpu display-1 text-danger"></i>
+                </div>
             </div>
         </div>
-    </section>
 
-    <main class="container py-5">
-        <section class="mb-5">
-            <div class="d-flex justify-content-between align-items-end mb-3">
-                <div><p class="text-uppercase text-muted small mb-1">Browse by type</p><h2 class="section-title h3 mb-0">Shop categories</h2></div>
-                <a href="{{ route('products.index') }}" class="text-decoration-none">View all</a>
+        <!-- Categories Section -->
+        <div class="mb-5">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="bg-danger rounded" style="width: 15px; height: 30px;"></div>
+                <span class="text-danger fw-bold">{{ __('Categories') }}</span>
             </div>
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-                @forelse ($categories as $category)
-                    <div class="col"><a class="category-card" href="{{ route('products.index', ['category' => $category->id]) }}"><i class="bi bi-cpu fs-3 text-danger"></i><h3 class="h6 mt-3 mb-1">{{ $category->category_name }}</h3><small class="text-muted">{{ $category->available_products_count }} available</small></a></div>
-                @empty
-                    <p class="text-muted">Categories will appear here after the database is seeded.</p>
-                @endforelse
+            <h2 class="h3 fw-bold mb-4">{{ __('Browse By Category') }}</h2>
+            <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+                @foreach ($categories as $cat)
+                    <div class="col">
+                        <a href="{{ route('catalog.index', ['category' => $cat->id]) }}" class="text-decoration-none">
+                            <div class="p-4 border rounded-4 text-center bg-white shadow-sm hover-cat h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi bi-hardware fs-1 text-dark mb-2"></i>
+                                <span class="fw-semibold text-dark fs-6">{{ $cat->category_name }}</span>
+                                <small class="text-muted mt-1">{{ $cat->available_products_count }} {{ __('Products') }}</small>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
-        </section>
+        </div>
 
-        <section>
-            <div class="d-flex justify-content-between align-items-end mb-3">
-                <div><p class="text-uppercase text-muted small mb-1">Latest arrivals</p><h2 class="section-title h3 mb-0">Featured products</h2></div>
-                <a href="{{ route('products.index') }}" class="text-decoration-none">All products <i class="bi bi-arrow-right"></i></a>
+        <!-- Featured Products -->
+        <div class="mb-5">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="bg-danger rounded" style="width: 15px; height: 30px;"></div>
+                <span class="text-danger fw-bold">{{ __('Our Products') }}</span>
             </div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-                @forelse ($featuredProducts as $product)
-                    <div class="col"><x-catalog.product-card :product="$product" /></div>
-                @empty
-                    <p class="text-muted">No available products yet.</p>
-                @endforelse
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 fw-bold mb-0">{{ __('Explore Our Products') }}</h2>
+                <a href="{{ route('catalog.index') }}" class="btn btn-outline-danger rounded-pill px-4">{{ __('View All Products') }}</a>
             </div>
-        </section>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                @foreach ($featuredProducts as $product)
+                    <div class="col">
+                        <x-catalog.product-card :product="$product" />
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </main>
-</x-layout>
+
+    <style>
+        .hover-cat {
+            transition: all 0.3s ease;
+        }
+        .hover-cat:hover {
+            background-color: #db4444 !important;
+            color: white !important;
+            transform: translateY(-5px);
+        }
+        .hover-cat:hover span, .hover-cat:hover i, .hover-cat:hover small {
+            color: white !important;
+        }
+    </style>

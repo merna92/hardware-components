@@ -1,170 +1,111 @@
-<x-layout.layout title="My Account">
+<x-layout.layout title="My Profile - Exclusive">
     <div class="container py-5">
-        
-        <!-- Success / Error Messages -->
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
-                <ul class="mb-0 ps-3">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        <div class="row g-5">
+        <div class="row g-4">
             
-            <!-- Left Minimal Navigation Sidebar -->
+            <!-- Left Sidebar -->
             <div class="col-lg-3">
-                <div class="pe-lg-3">
-                    
-                    <!-- Section 1: Manage My Account -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3 text-dark">Manage My Account</h6>
-                        <ul class="list-unstyled ps-3 mb-0 d-flex flex-column gap-2">
-                            <li>
-                                <a href="/profile" class="text-decoration-none fw-medium text-danger">My Profile</a>
-                            </li>
-                            <li>
-                                <a href="/addresses" class="text-decoration-none text-secondary hover-link">Address Book</a>
-                            </li>
-                            <li>
-                                <a href="/payments" class="text-decoration-none text-secondary hover-link">My Payment Options</a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h6 class="fw-bold mb-3 text-dark">{{ __('Manage My Account') }}</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-6">
+                        <li><a href="{{ route('profile') }}" class="text-decoration-none fw-semibold text-danger">{{ __('My Profile') }}</a></li>
+                        <li><a href="{{ route('addresses.index') }}" class="text-decoration-none text-secondary hover-red">{{ __('Address Book') }}</a></li>
+                        <li><a href="{{ route('payments.index') }}" class="text-decoration-none text-secondary hover-red">{{ __('My Payment Options') }}</a></li>
+                    </ul>
 
-                    <!-- Section 2: My Orders -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3 text-dark">My Orders</h6>
-                        <ul class="list-unstyled ps-3 mb-0 d-flex flex-column gap-2">
-                            <li>
-                                <a href="/orders" class="text-decoration-none text-secondary hover-link">My Orders History</a>
-                            </li>
-                            <li>
-                                <a href="/returns" class="text-decoration-none text-secondary hover-link">My Returns</a>
-                            </li>
-                            <li>
-                                <a href="/cancellations" class="text-decoration-none text-secondary hover-link">My Cancellations</a>                            </li>
-                        </ul>
-                    </div>
+                    <h6 class="fw-bold mb-3 text-dark">{{ __('My Orders') }}</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-6">
+                        <li><a href="{{ route('orders.index') }}" class="text-decoration-none text-secondary hover-red">{{ __('My Orders History') }}</a></li>
+                        <li><a href="{{ route('cancellations.index') }}" class="text-decoration-none text-secondary hover-red">{{ __('My Cancellations') }}</a></li>
+                    </ul>
 
-                    <!-- Section 3: My WishList -->
-                    <div>
-                        <a href="/wishlist" class="text-decoration-none fw-bold h6 d-block mb-0 text-dark hover-link">My WishList</a>
-                    </div>
-                                    <!-- Logout Button -->
-                <div class="mt-4 pt-3 border-top">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <h6 class="fw-bold mb-3 text-dark">{{ __('My Wishlist') }}</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-6">
+                        <li><a href="{{ route('wishlist.index') }}" class="text-decoration-none text-secondary hover-red">{{ __('Wishlist Items') }}</a></li>
+                    </ul>
+
+                    <hr class="my-3">
+
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
+                        <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none fw-semibold">
+                            <i class="bi bi-box-arrow-left me-1"></i> {{ __('Logout') }}
+                        </button>
                     </form>
-                    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="text-decoration-none fw-bold text-danger d-flex align-items-center gap-2 hover-link">
-                        <i class="bi bi-box-arrow-right fs-5"></i> Logout
-                    </a>
-                </div>
                 </div>
             </div>
 
-            <!-- Right Main Form Card -->
+            <!-- Right Content Form -->
             <div class="col-lg-9">
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
                     
-                    <!-- Hidden Avatar Form -->
-                    <form id="avatarForm" action="{{ route('profile.avatar.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" id="avatarInput" name="avatar" class="d-none" accept="image/*">
-                    </form>
+                    @if(session('success'))
+                        <div class="alert alert-success border-0 mb-4 rounded-3">{{ session('success') }}</div>
+                    @endif
 
-                    <!-- Avatar Upload Header Box -->
-                    <div class="d-flex align-items-center gap-4 mb-4 pb-4 border-bottom">
-                        <div class="position-relative cursor-pointer" onclick="document.getElementById('avatarInput').click();">
+                    <!-- Avatar Upload -->
+                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                        <div class="position-relative">
                             @if(auth()->user()->avatar)
-                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" 
-                                     alt="Profile Avatar" 
-                                     class="rounded-circle object-fit-cover shadow-sm border" 
-                                     style="width: 80px; height: 80px; border-color: #e2e8f0 !important;">
-                                <span class="badge rounded-circle position-absolute bottom-0 end-0 p-2 shadow-sm text-white bg-danger">
-                                    <i class="bi bi-pencil-fill fs-7"></i>
-                                </span>
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle object-fit-cover border" style="width: 80px; height: 80px;" alt="{{ auth()->user()->name }}">
                             @else
-                                <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold fs-2 shadow-sm border bg-light text-secondary" 
-                                     style="width: 80px; height: 80px; border-color: #e2e8f0 !important;">
-                                    <i class="bi bi-person-fill fs-2"></i>
+                                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-person fs-1 text-muted"></i>
                                 </div>
-                                <span class="badge rounded-circle position-absolute bottom-0 end-0 p-2 shadow-sm text-white bg-danger">
-                                    <i class="bi bi-plus-lg fw-bold fs-7"></i>
-                                </span>
                             @endif
+                            <label for="avatar_input" class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow-sm" style="width: 26px; height: 26px;">
+                                <i class="bi bi-plus fs-6"></i>
+                            </label>
                         </div>
-
                         <div>
-                            <h5 class="fw-bold mb-1 text-danger">Edit Your Profile</h5>
-                            <button type="button" class="btn btn-link p-0 text-decoration-none fs-7 fw-medium text-secondary" onclick="document.getElementById('avatarInput').click();">
-                                <i class="bi bi-camera me-1"></i> {{ auth()->user()->avatar ? 'Change Profile Photo' : 'Upload Profile Photo' }}
-                            </button>
+                            <h5 class="fw-bold text-danger mb-0">{{ __('Edit Your Profile') }}</h5>
+                            <form action="{{ route('profile.avatar.update') }}" method="POST" enctype="multipart/form-data" id="avatar_form">
+                                @csrf
+                                <input type="file" name="avatar" id="avatar_input" accept="image/*" class="d-none" onchange="document.getElementById('avatar_form').submit()">
+                                <small class="text-muted cursor-pointer" onclick="document.getElementById('avatar_input').click()"><i class="bi bi-camera me-1"></i> {{ __('Upload Profile Photo') }}</small>
+                            </form>
                         </div>
                     </div>
 
-                    <!-- Main Form Details & Password -->
+                    <!-- Profile Info Form -->
                     <form action="{{ route('profile.update') }}" method="POST">
                         @csrf
                         
-                        <!-- Basic Info Section -->
-                        <div class="row g-4 mb-4">
-                            <!-- First Name -->
+                        <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-medium small mb-2 text-dark">First Name</label>
-                                <input type="text" name="first_name" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" value="{{ auth()->user()->first_name ?? '' }}" placeholder="First Name" required>
+                                <label class="form-label small fw-semibold text-dark">{{ __('First Name') }}</label>
+                                <input type="text" name="first_name" class="form-control bg-light border-0 py-2 px-3" value="{{ old('first_name', auth()->user()->first_name ?? explode(' ', auth()->user()->name)[0] ?? '') }}" required>
                             </div>
-
-                            <!-- Last Name -->
                             <div class="col-md-6">
-                                <label class="form-label fw-medium small mb-2 text-dark">Last Name</label>
-                                <input type="text" name="last_name" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" value="{{ auth()->user()->last_name ?? '' }}" placeholder="Last Name">
+                                <label class="form-label small fw-semibold text-dark">{{ __('Last Name') }}</label>
+                                <input type="text" name="last_name" class="form-control bg-light border-0 py-2 px-3" value="{{ old('last_name', auth()->user()->last_name ?? explode(' ', auth()->user()->name)[1] ?? '') }}">
                             </div>
-
-                            <!-- Email -->
                             <div class="col-md-6">
-                                <label class="form-label fw-medium small mb-2 text-dark">Email</label>
-                                <input type="email" name="email" value="{{ auth()->user()->email }}" class="form-control" readonly>
+                                <label class="form-label small fw-semibold text-dark">{{ __('Email') }}</label>
+                                <input type="email" name="email" class="form-control bg-light border-0 py-2 px-3" value="{{ old('email', auth()->user()->email) }}" required>
                             </div>
-
-                            <!-- Address / Phone -->
                             <div class="col-md-6">
-                                <label class="form-label fw-medium small mb-2 text-dark">Address / Phone</label>
-                                <input type="text" name="phone" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" value="{{ auth()->user()->phone ?? '' }}" placeholder="Phone or Address">
+                                <label class="form-label small fw-semibold text-dark">{{ __('Address / Phone') }}</label>
+                                <input type="text" name="phone" class="form-control bg-light border-0 py-2 px-3" value="{{ old('phone', auth()->user()->phone ?? auth()->user()->phone_number ?? '') }}">
                             </div>
                         </div>
 
-                        <!-- Password Changes Section -->
-                        <div class="mt-4 pt-2">
-                            <h6 class="fw-semibold mb-3 text-dark">Password Changes</h6>
-                            
-                            <div class="d-flex flex-column gap-3 mb-4">
-                                <input type="password" name="current_password" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" placeholder="Current Password">
-                                <input type="password" name="new_password" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" placeholder="New Password">
-                                <input type="password" name="new_password_confirmation" class="form-control border-0 py-2.5 px-3 rounded-2 custom-input" placeholder="Confirm New Password">
+                        <h6 class="fw-bold text-dark mb-3">{{ __('Password Changes') }}</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <input type="password" name="current_password" class="form-control bg-light border-0 py-2 px-3" placeholder="{{ __('Current Password') }}">
+                            </div>
+                            <div class="col-12">
+                                <input type="password" name="new_password" class="form-control bg-light border-0 py-2 px-3" placeholder="{{ __('New Password') }}">
+                            </div>
+                            <div class="col-12">
+                                <input type="password" name="new_password_confirmation" class="form-control bg-light border-0 py-2 px-3" placeholder="{{ __('Confirm New Password') }}">
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="d-flex align-items-center justify-content-end gap-3 mt-4 pt-3">
-                            <button type="reset" class="btn btn-link text-decoration-none fw-medium text-dark px-3 py-2">
-                                Cancel
-                            </button>
-                            <button type="submit" class="btn text-white px-4 py-2.5 rounded-2 fw-medium shadow-sm bg-danger border-0 hover-red-btn">
-                                Save Changes
-                            </button>
+                        <div class="d-flex justify-content-end gap-3">
+                            <a href="{{ url('/') }}" class="btn btn-link text-dark text-decoration-none">{{ __('Cancel') }}</a>
+                            <button type="submit" class="btn btn-danger px-4 py-2 rounded-3 fw-semibold">{{ __('Save Changes') }}</button>
                         </div>
-
                     </form>
 
                 </div>
@@ -174,42 +115,7 @@
     </div>
 
     <style>
-        .cursor-pointer {
-            cursor: pointer;
-        }
-        .custom-input {
-            background-color: #f5f5f5 !important;
-            color: #333333 !important;
-            font-size: 0.925rem;
-        }
-        .custom-input:focus {
-            box-shadow: 0 0 0 2px #cbd5e1;
-            background-color: #ffffff !important;
-        }
-        .hover-link:hover {
-            color: #dc3545 !important;
-        }
-        .hover-red-btn {
-            transition: background-color 0.2s ease;
-        }
-        .hover-red-btn:hover {
-            background-color: #e62e04 !important;
-        }
-        .fs-7 {
-            font-size: 0.825rem;
-        }
+        .hover-red:hover { color: #db4444 !important; }
+        .cursor-pointer { cursor: pointer; }
     </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const avatarInput = document.getElementById('avatarInput');
-            if (avatarInput) {
-                avatarInput.addEventListener('change', function () {
-                    if (this.files && this.files[0]) {
-                        document.getElementById('avatarForm').submit();
-                    }
-                });
-            }
-        });
-    </script>
 </x-layout.layout>

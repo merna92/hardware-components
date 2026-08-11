@@ -1,71 +1,52 @@
-<x-layout title="Admin Products">
-    <main class="container py-5">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+<x-layout.layout title="Products Management - Admin">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-dark mb-0">Products Management</h3>
             <div>
-                <h1 class="h3 fw-bold mb-1"><span class="exclusive-pill"></span>Products</h1>
-                <p class="text-muted mb-0">Manage hardware products, prices, stock, and images.</p>
+                <a href="{{ route('admin.products.create') }}" class="btn btn-danger rounded-pill px-4 fw-semibold me-2">+ Add Product</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4">Dashboard</a>
             </div>
-            <a href="{{ route('admin.products.create') }}" class="btn btn-exclusive">
-                <i class="bi bi-plus-circle me-1"></i> Add Product
-            </a>
         </div>
 
-        @include('admin.partials.alerts')
+        @if(session('success'))
+            <div class="alert alert-success border-0 mb-4">{{ session('success') }}</div>
+        @endif
 
-        <div class="card admin-card-exclusive">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
             <div class="table-responsive">
-                <table class="table admin-table-exclusive align-middle mb-0">
+                <table class="table align-middle">
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>Name</th>
+                            <th>Product</th>
                             <th>Category</th>
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
-                            <th class="text-end">Actions</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($products as $product)
+                        @foreach($products as $product)
                             <tr>
-                                <td style="width: 84px;">
-                                    @if ($product->image_url)
-                                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->product_name }}" class="rounded object-fit-cover" width="56" height="56">
-                                    @else
-                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
-                                            <i class="bi bi-image text-muted"></i>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td class="fw-semibold">{{ $product->product_name }}</td>
-                                <td>{{ $product->category?->category_name ?? 'N/A' }}</td>
-                                <td>${{ number_format((float) $product->price, 2) }}</td>
+                                <td class="fw-bold">{{ $product->product_name }}</td>
+                                <td>{{ $product->category->category_name }}</td>
+                                <td class="fw-semibold">${{ number_format($product->price, 2) }}</td>
                                 <td>{{ $product->stock_quantity }}</td>
-                                <td><span class="badge text-bg-secondary">{{ $product->status }}</span></td>
-                                <td class="text-end">
-                                    <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                <td><span class="badge {{ $product->status === 'Available' ? 'bg-success' : 'bg-secondary' }} px-3 py-2 fs-7">{{ $product->status }}</span></td>
+                                <td>
+                                    <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-outline-dark me-2">Edit</a>
                                     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this product?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete product?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted py-4">No products found.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">{{ $products->links() }}</div>
         </div>
-
-        <div class="mt-4">{{ $products->links('pagination::bootstrap-5') }}</div>
-    </main>
-</x-layout>
+    </div>
+</x-layout.layout>

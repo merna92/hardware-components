@@ -32,7 +32,7 @@ class CheckoutController extends Controller
             'cartItems' => $items,
             'totals' => $this->totals($items),
             'coupon' => $this->coupon(),
-            'user' => User::find($this->userId()),
+            'user' => Auth::user(),
         ]);
     }
 
@@ -41,7 +41,7 @@ class CheckoutController extends Controller
         try {
             $order = DB::transaction(function () {
                 $cart = Cart::query()
-                    ->where('user_id', $this->userId())
+                    ->where('user_id', Auth::id())
                     ->where('status', 'Active')
                     ->lockForUpdate()
                     ->latest('id')
@@ -74,7 +74,7 @@ class CheckoutController extends Controller
                 $coupon = $this->coupon();
                 $totals = $this->totals($items, $coupon);
                 $order = Order::create([
-                    'user_id' => $this->userId(),
+                    'user_id' => Auth::id(),
                     'order_date' => now(),
                     'total_amount' => $totals['subtotal'],
                     'discount_amount' => $totals['discount'],
@@ -115,23 +115,22 @@ class CheckoutController extends Controller
 
     public function success(Order $order): View
     {
-        abort_unless($order->user_id === $this->userId(), 404);
+        abort_unless($order->user_id === Auth::id(), 404);
 
         return view('checkout.success', compact('order'));
     }
 
     private function activeCart(): ?Cart
     {
+        if (!Auth::check()) {
+            return null;
+        }
+
         return Cart::query()
-            ->where('user_id', $this->userId())
+            ->where('user_id', Auth::id())
             ->where('status', 'Active')
             ->latest('id')
             ->first();
-    }
-
-    private function userId(): int
-    {
-        return Auth::id() ?? (int) User::query()->where('email', 'test@example.com')->value('id');
     }
 
     private function coupon(): ?Coupon

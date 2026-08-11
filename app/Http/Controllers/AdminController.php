@@ -13,7 +13,7 @@ class AdminController extends Controller
     {
         $totalSales = DB::table('orders')->sum('final_amount');
         $ordersCount = DB::table('orders')->count();
-        $customersCount = User::where('role_type', 'Customer')->count();
+        $customersCount = User::where('role', 'customer')->orWhere('role_type', 'Customer')->count();
         $productsCount = DB::table('products')->count();
         $activeCoupons = Coupon::where('status', 'Active')->count();
         $latestOrders = DB::table('orders')->latest()->take(5)->get();
@@ -47,18 +47,21 @@ class AdminController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email,' . $user->id],
-            'phone_number' => ['nullable', 'string', 'max:30'],
-            'role_type' => ['required', 'in:Admin,Customer,Support_Agent'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'role' => ['required', 'in:admin,customer,Admin,Customer,Support_Agent'],
         ]);
 
-        $user->update($request->only([
-            'first_name',
-            'last_name',
-            'name',
-            'email',
-            'phone_number',
-            'role_type',
-        ]));
+        $role = strtolower($request->role);
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'phone_number' => $request->phone,
+            'role' => $role,
+            'role_type' => ucfirst($role),
+        ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
     }
