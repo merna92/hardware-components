@@ -56,3 +56,4 @@
         </div>
     </div>
 </footer>
+<?php /**PATH C:\Users\Gergs\Documents\Codex\2026-08-10\5-5\work\hardware-components-main\hardware-components-main\resources\views/components/layout/footer.blade.php ENDPATH**/ ?>

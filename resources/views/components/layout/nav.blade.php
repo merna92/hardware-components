@@ -24,7 +24,7 @@
             </div>
             </form>
 
-            <a href="#" class="navbar-icon-btn ms-2 position-relative">
+            <a href="#" class="navbar-icon-btn ms-2 position-relative" aria-label="Wishlist">
             <i class="bi bi-heart fs-5"></i>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle badge-wishlist">{{-- Put the number here --}}</span>
             </a>
