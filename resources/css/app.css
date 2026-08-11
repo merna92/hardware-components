@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./components/_nav.css";
 @import "./components/_footer.css";
+@import "./components/_cart.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -26,7 +27,7 @@
     --color-text2: oklch(0% 0 0);
 
     --color-button: oklch(0% 0 0);
-    --color-secondary2: oklch(62% 0.22 25);
+    --color-secondary-2: oklch(62% 0.22 25);
     --color-button1: oklch(72% 0.26 142);
     --color-button2: oklch(60% 0.23 25);
 
