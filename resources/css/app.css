@@ -34,4 +34,84 @@
     --color-hover-button-blue: oklch(78% 0.08 240);
 
     --color-border-30: oklch(0% 0 0 / 0.3);
+
+    /* Exclusive UI Custom Variables */
+    --exclusive-red: #DB4444;
+    --exclusive-hover-red: #E07575;
+}
+
+/* Exclusive UI Custom Classes for Admin Panel */
+button.btn-exclusive, a.btn-exclusive, .btn.btn-exclusive {
+    background-color: var(--exclusive-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+button.btn-exclusive:hover, a.btn-exclusive:hover, .btn.btn-exclusive:hover, .btn.btn-exclusive:focus {
+    background-color: var(--exclusive-hover-red);
+    color: white;
+}
+button.btn-outline-exclusive, a.btn-outline-exclusive, .btn.btn-outline-exclusive {
+    background-color: transparent;
+    color: var(--exclusive-red);
+    border: 1px solid var(--exclusive-red);
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+button.btn-outline-exclusive:hover, a.btn-outline-exclusive:hover, .btn.btn-outline-exclusive:hover {
+    background-color: var(--exclusive-red);
+    color: white;
+}
+.text-exclusive {
+    color: var(--exclusive-red) !important;
+}
+.bg-exclusive {
+    background-color: var(--exclusive-red) !important;
+}
+.exclusive-pill {
+    display: inline-block;
+    width: 20px;
+    height: 40px;
+    background-color: var(--exclusive-red);
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 12px;
+}
+.admin-table-exclusive {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    background-color: transparent;
+}
+.admin-table-exclusive th {
+    border: none;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.admin-table-exclusive td {
+    border: none;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    vertical-align: middle;
+}
+.admin-table-exclusive tbody tr {
+    transition: box-shadow 0.3s ease;
+}
+.admin-table-exclusive tbody tr:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.admin-card-exclusive {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+.admin-table-exclusive tr.collapse-row td {
+    padding: 0 !important;
+    background-color: transparent !important;
 }

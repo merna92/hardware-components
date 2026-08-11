@@ -1,0 +1,114 @@
+:root {
+    --color-primary: #ffffff;
+    --color-primary1: #595959;
+    --color-secondary1: #f7f4ed;
+    --color-bg: #ffffff;
+    --color-text1: #777777;
+    --color-text2: #000000;
+    --color-button2: #b6382d;
+    --color-hover-button-blue: #8fbfd7;
+    --color-border-30: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.custom-navbar {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border-30);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.custom-navbar .navbar-brand {
+    color: var(--color-text2);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.custom-navbar .nav-link {
+    color: var(--color-text2);
+    font-weight: 500;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+    color: var(--color-button2);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.custom-search-input,
+.custom-search-btn {
+    background-color: var(--color-secondary1);
+    border: none;
+}
+
+.navbar-icon-btn {
+    color: var(--color-text2);
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.navbar-icon-btn:hover {
+    color: var(--color-button2);
+}
+
+.badge-wishlist {
+    background-color: var(--color-button2);
+    color: var(--color-primary);
+}
+
+.custom-footer {
+    background-color: var(--color-text2);
+    color: var(--color-primary);
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.custom-footer h5,
+.custom-footer h6 {
+    color: var(--color-primary);
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+.custom-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-footer ul li {
+    margin-bottom: 0.75rem;
+}
+
+.custom-footer a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.custom-footer a:hover {
+    color: var(--color-hover-button-blue);
+}
+
+.custom-footer .text-muted-custom {
+    color: var(--color-text1);
+}
+
+.social-icon-btn {
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--color-primary1);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: var(--color-primary1);
+    font-size: 0.85rem;
+}
