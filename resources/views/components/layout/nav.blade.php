@@ -2,14 +2,10 @@
     <div class="container d-flex justify-content-center justify-content-md-between align-items-center">
         <span>{{ __('Summer Sale For All Hardware Components - OFF 20%!') }} <a href="{{ route('catalog.index') }}" class="text-white text-decoration-underline fw-bold ms-2">{{ __('ShopNow') }}</a></span>
         <div class="d-none d-md-flex align-items-center gap-3">
-            <!-- Dark Mode Toggle -->
             <a href="javascript:void(0)" id="themeToggleBtn" class="text-white text-decoration-none" title="Toggle Dark Mode">
                 <i class="bi bi-moon fs-6"></i>
             </a>
-            <!-- Language Toggle (simple icon like dark mode) -->
-            <a href="{{ route('locale.set', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" 
-               class="text-white text-decoration-none d-flex align-items-center gap-1" 
-               id="langToggleBtn" title="Toggle Language">
+            <a href="{{ route('locale.set', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="text-white text-decoration-none d-flex align-items-center gap-1" id="langToggleBtn" title="Toggle Language">
                 <i class="bi bi-translate fs-6"></i>
                 <span class="fw-bold" style="font-size: 0.75rem;">{{ app()->getLocale() == 'ar' ? 'EN' : 'AR' }}</span>
             </a>
@@ -19,16 +15,9 @@
 
 <nav class="navbar navbar-expand-lg custom-navbar bg-white border-bottom py-3 shadow-sm sticky-top">
     <div class="container">
-
-        <!-- Brand Logo -->
-        <a class="navbar-brand text-decoration-none d-flex align-items-center py-0" href="{{ route('home') }}" style="gap: 4px;">
-            <!-- Cropped S Logo -->
-            <div style="height: 78px; overflow: hidden; display: flex; align-items: flex-start;" class="rounded">
-                <img src="{{ asset('images/silica-logo.jpg') }}" alt="S" style="width: 58px; height: auto; transition: transform 0.3s ease; mix-blend-mode: multiply;" class="hover-scale-img">
-            </div>
-            
-            <!-- Appended Text -->
-            <span class="silica-brand-text mb-0" style="font-size: 2.3rem; margin-top: 4px;">
+        <a class="navbar-brand text-decoration-none d-flex align-items-center py-0" href="{{ route('home') }}" style="gap: 0;">
+            <img src="{{ asset('images/silica-logo-transparent.png') }}" alt="Silica" class="hover-scale-img silica-logo-icon" style="width: 58px; height: 58px; object-fit: contain; margin-right: -3px;">
+            <span class="silica-brand-text mb-0" dir="auto" style="font-size: 1.9rem; margin-top: 1px; letter-spacing: 0; unicode-bidi: plaintext;">
                 {{ app()->getLocale() == 'ar' ? 'سِــــــــيليـــــــکا' : 'ILICA' }}
             </span>
         </a>
@@ -38,8 +27,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-
-            <!-- Nav Links -->
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-2">
                 <li class="nav-item">
                     <a class="nav-link custom-nav-link text-dark px-3 position-relative {{ request()->routeIs('home') ? 'active-link' : '' }}" href="{{ route('home') }}">{{ __('Home') }}</a>
@@ -66,47 +53,37 @@
                 @endauth
             </ul>
 
-            <!-- Right Utilities -->
             <div class="d-flex align-items-center gap-3">
-                
-                <!-- Search Form -->
                 <form class="d-flex" role="search" action="{{ route('catalog.index') }}" method="GET">
                     <div class="input-group search-modern-group">
                         <span class="input-group-text bg-transparent border-0 pe-0">
                             <i class="bi bi-search text-muted"></i>
                         </span>
-                        <input class="form-control border-0 shadow-none py-2 px-2 fs-6" 
-                               type="search" 
-                               name="search" 
-                               value="{{ request('search') }}" 
+                        <input class="form-control border-0 shadow-none py-2 px-2 fs-6"
+                               type="search"
+                               name="search"
+                               value="{{ request('search') }}"
                                placeholder="{{ __('Search products...') }}">
                     </div>
                 </form>
 
-                <!-- Wishlist Icon -->
-                <a href="{{ route('wishlist.index') }}" 
-                   class="navbar-icon-btn position-relative text-dark fs-5 p-2 rounded-circle hover-icon-box" 
-                   title="{{ __('Wishlist') }}">
+                <a href="{{ route('wishlist.index') }}" class="navbar-icon-btn position-relative text-dark fs-5 p-2 rounded-circle hover-icon-box" title="{{ __('Wishlist') }}">
                     <i class="bi bi-heart"></i>
                 </a>
 
-                <!-- Cart Icon -->
-                <a href="{{ route('cart.index') }}" 
-                   class="navbar-icon-btn position-relative text-dark fs-5 p-2 rounded-circle hover-icon-box" 
-                   title="{{ __('Cart') }}">
+                <a href="{{ route('cart.index') }}" class="navbar-icon-btn position-relative text-dark fs-5 p-2 rounded-circle hover-icon-box" title="{{ __('Cart') }}">
                     <i class="bi bi-cart3"></i>
                 </a>
 
-                <!-- User Profile / Auth Link -->
                 @auth
                     <a href="{{ route('profile') }}" class="d-inline-flex align-items-center justify-content-center text-decoration-none">
                         @if(auth()->user()->avatar)
-                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" 
-                                alt="{{ auth()->user()->name }}" 
-                                class="rounded-circle object-fit-cover border shadow-sm" 
+                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                                alt="{{ auth()->user()->name }}"
+                                class="rounded-circle object-fit-cover border shadow-sm"
                                 style="width: 38px; height: 38px; border-color: #e2e8f0 !important;">
                         @else
-                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center border" 
+                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center border"
                                 style="width: 38px; height: 38px;">
                                 <i class="bi bi-person fs-5"></i>
                             </div>
@@ -117,11 +94,8 @@
                         <i class="bi bi-box-arrow-in-right me-1"></i> {{ __('Login') }}
                     </a>
                 @endauth
-
             </div>
-
         </div>
-
     </div>
 </nav>
 
@@ -194,47 +168,29 @@
     .search-modern-group .input-group-text {
         color: #adb5bd;
     }
-
-    /* Silica Brand Logo */
     .silica-brand-text {
         font-family: 'Orbitron', sans-serif;
         font-weight: 800;
-        font-size: 1.45rem;
-        letter-spacing: 3px;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        transition: all 0.3s ease;
+        letter-spacing: 0;
+        color: #0f1f3d;
+        transition: color 0.3s ease, transform 0.3s ease;
         text-transform: uppercase;
+        unicode-bidi: plaintext;
     }
     [dir="rtl"] .silica-brand-text {
         font-family: 'Orbitron', 'Cairo', sans-serif;
-        letter-spacing: 2px;
-        font-size: 1.5rem;
+        letter-spacing: 0;
     }
     .navbar-brand:hover .silica-brand-text {
-        background: linear-gradient(135deg, #db4444 0%, #ff6b6b 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0f1f3d;
     }
     .silica-logo-icon {
         transition: transform 0.3s ease;
     }
     .navbar-brand:hover .silica-logo-icon {
-        transform: rotate(12deg) scale(1.08);
+        transform: scale(1.04);
     }
     [data-bs-theme="dark"] .silica-brand-text {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    [data-bs-theme="dark"] .navbar-brand:hover .silica-brand-text {
-        background: linear-gradient(135deg, #db4444 0%, #ff6b6b 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #0f1f3d;
     }
 </style>

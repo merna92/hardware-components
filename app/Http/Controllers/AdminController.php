@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
+use App\Models\Brand;
 use App\Models\Coupon;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +20,18 @@ class AdminController extends Controller
         $productsCount = DB::table('products')->count();
         $activeCoupons = Coupon::where('status', 'Active')->count();
         $latestOrders = DB::table('orders')->latest()->take(5)->get();
+        $bestSellingProducts = DB::table('order_items')
+            ->select('product_id', DB::raw('SUM(quantity) as total_quantity'))
+            ->groupBy('product_id')
+            ->orderByDesc('total_quantity')
+            ->limit(5)
+            ->get()
+            ->map(function ($item) {
+                return (object) [
+                    'product' => DB::table('products')->where('id', $item->product_id)->value('product_name'),
+                    'total_quantity' => $item->total_quantity,
+                ];
+            });
 
         return view('admin.dashboard', compact(
             'totalSales',
@@ -24,7 +39,8 @@ class AdminController extends Controller
             'customersCount',
             'productsCount',
             'activeCoupons',
-            'latestOrders'
+            'latestOrders',
+            'bestSellingProducts'
         ));
     }
 
@@ -33,6 +49,27 @@ class AdminController extends Controller
         $users = User::latest()->paginate(10);
 
         return view('admin.users.index', compact('users'));
+    }
+
+    public function activityLogs()
+    {
+        $logs = ActivityLog::with('user')->latest()->paginate(15);
+
+        return view('admin.activity-logs.index', compact('logs'));
+    }
+
+    public function brands()
+    {
+        $brands = Brand::withCount('products')->latest()->paginate(10);
+
+        return view('admin.brands.index', compact('brands'));
+    }
+
+    public function reviews()
+    {
+        $reviews = Review::with(['user', 'product'])->latest()->paginate(15);
+
+        return view('admin.reviews.index', compact('reviews'));
     }
 
     public function editUser(User $user)
@@ -113,6 +150,13 @@ class AdminController extends Controller
         $coupon->delete();
 
         return back()->with('success', 'Coupon deleted successfully');
+    }
+
+    public function deleteReview(Review $review)
+    {
+        $review->delete();
+
+        return back()->with('success', 'Review deleted successfully.');
     }
 
     private function couponValidation(Request $request, $couponId = null)

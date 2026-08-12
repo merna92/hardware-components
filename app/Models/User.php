@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'first_name',
@@ -70,7 +72,24 @@ class User extends Authenticatable
         return $role === 'admin';
     }
 
+    public function permissions(): array
+    {
+        return $this->isAdmin()
+            ? ['manage_users', 'manage_products', 'manage_categories', 'manage_coupons', 'manage_orders', 'restore_products']
+            : ['browse_products', 'manage_cart', 'manage_wishlist', 'place_orders'];
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        return in_array($permission, $this->permissions(), true);
+    }
+
     // Relationships
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
     public function carts(): HasMany
     {
         return $this->hasMany(\App\Models\Cart::class);
@@ -95,5 +114,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\PaymentMethod::class);
     }
-}
 
+    public function wishlistProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'wishlists')->withTimestamps();
+    }
+}

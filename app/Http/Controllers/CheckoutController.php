@@ -73,6 +73,9 @@ class CheckoutController extends Controller
 
                 $coupon = $this->coupon();
                 $totals = $this->totals($items, $coupon);
+                $paymentMethod = $request->validated('payment_method');
+                $paymentDetails = $request->validated('payment_details');
+
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'order_date' => now(),
@@ -82,6 +85,8 @@ class CheckoutController extends Controller
                     'final_amount' => $totals['total'],
                     'status' => 'Pending',
                     'payment_status' => 'Unpaid',
+                    'payment_method' => $paymentMethod,
+                    'payment_details' => $paymentDetails,
                 ]);
 
                 foreach ($items as $item) {

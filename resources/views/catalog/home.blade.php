@@ -3,7 +3,7 @@
         <div class="p-5 bg-dark text-white rounded-4 shadow-sm mb-5 position-relative overflow-hidden">
             <div class="row align-items-center position-relative z-1 py-4">
                 <div class="col-lg-7">
-                    <span class="text-danger fw-bold text-uppercase tracking-wider">{{ __('iPhone 14 Series / Hardware Tech') }}</span>
+                    <span class="text-danger fw-bold text-uppercase tracking-wider">{{ __('Hardware Tech Series') }}</span>
                     <h1 class="display-4 fw-extrabold text-white mt-2 mb-3">{{ __('Up to 10% off Voucher for Hardware Components') }}</h1>
                     <p class="text-secondary lead mb-4">{{ __('Discover high performance GPUs, CPUs, Motherboards and NVMe SSDs with official warranty.') }}</p>
                     <a href="{{ route('catalog.index') }}" class="btn btn-danger btn-lg rounded-pill px-5 fw-bold shadow-sm">
@@ -11,7 +11,7 @@
                     </a>
                 </div>
                 <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                    <i class="bi bi-cpu display-1 text-danger"></i>
+                    <img src="{{ asset('images/silica-logo-transparent.png') }}" alt="Silica" class="img-fluid" style="max-width: 210px; object-fit: contain;">
                 </div>
             </div>
         </div>

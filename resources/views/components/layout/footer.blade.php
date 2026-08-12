@@ -1,16 +1,15 @@
 <footer class="custom-footer bg-dark text-white pt-5 pb-3">
     <div class="container">
         <div class="row g-4">
-
             <div class="col-12 col-md-3">
-                <h5 class="fw-bold text-white mb-3 silica-brand-text-footer">{{ app()->getLocale() == 'ar' ? 'سيلكا' : 'SILICA' }}</h5>
+                <h5 class="fw-bold text-white mb-3 silica-brand-text-footer">{{ app()->getLocale() == 'ar' ? 'سيليكا' : 'SILICA' }}</h5>
                 <p class="text-secondary fs-6">{{ __('High quality computer hardware components for your custom PC builds and gaming setup.') }}</p>
             </div>
 
             <div class="col-12 col-md-3">
                 <h5 class="fw-bold text-white mb-3">{{ __('Support') }}</h5>
                 <ul class="list-unstyled text-secondary fs-6">
-                    <li class="mb-2"><i class="bi bi-geo-alt text-danger me-2"></i>111 Cairo Tech Hub, Egypt</li>
+                    <li class="mb-2"><i class="bi bi-geo-alt text-danger me-2"></i>{{ __('111 Cairo Tech Hub, Egypt') }}</li>
                     <li class="mb-2"><i class="bi bi-envelope text-danger me-2"></i>support@silica.com</li>
                     <li><i class="bi bi-telephone text-danger me-2"></i>+8801611112222</li>
                 </ul>
@@ -41,7 +40,6 @@
                     <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-linkedin"></i></a>
                 </div>
             </div>
-
         </div>
 
         <div class="border-top border-secondary mt-5 pt-3 text-center text-secondary fs-7">
@@ -54,11 +52,7 @@
     .hover-white:hover { color: white !important; }
     .silica-brand-text-footer {
         font-family: 'Orbitron', sans-serif;
-        letter-spacing: 2px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        letter-spacing: 0;
     }
     [dir="rtl"] .silica-brand-text-footer {
         font-family: 'Orbitron', 'Cairo', sans-serif;

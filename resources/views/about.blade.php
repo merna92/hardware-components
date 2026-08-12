@@ -1,4 +1,4 @@
-<x-layout.layout title="About Us - Hardware Components">
+<x-layout.layout :title="__('About Us') . ' - ' . __('Dashboard')">
     <main class="container my-5 py-4">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
@@ -21,10 +21,8 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="p-5 bg-dark text-white rounded-4 text-center">
-                    <i class="bi bi-cpu display-1 text-danger mb-3"></i>
-                    <h3 class="fw-bold">{{ __('Exclusive Hardware') }}</h3>
-                    <p class="text-secondary mb-0">{{ __('Top tier GPUs, CPUs, Motherboards, RAM & NVMe SSDs guaranteed 100% genuine.') }}</p>
+                <div class="p-5 bg-dark text-white rounded-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <img src="{{ asset('images/silica-logo-transparent.png') }}" alt="Silica" class="img-fluid mb-3" style="max-width: 180px; object-fit: contain;">
                 </div>
             </div>
         </div>

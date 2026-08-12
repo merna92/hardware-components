@@ -1,4 +1,4 @@
-<x-layout.layout title="My Profile - Exclusive">
+<x-layout.layout :title="__('My Profile') . ' - ' . __('Dashboard')">
     <div class="container py-5">
         <div class="row g-4">
             

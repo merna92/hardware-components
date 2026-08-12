@@ -1,4 +1,4 @@
-<x-layout.layout title="My Returns - Hardware Components">
+<x-layout.layout :title="__('My Returns') . ' - ' . __('Dashboard')">
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-3">
@@ -24,13 +24,13 @@
                             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                                 <div>
                                     <span class="fw-bold text-dark me-2">{{ __('Order') }} #{{ $order->id }}</span>
-                                    <small class="text-muted">{{ $order->created_at->format('M d, Y') }}</small>
+                                    <small class="text-muted">{{ $order->created_at->format('Y-m-d') }}</small>
                                 </div>
                                 <span class="badge {{ $order->status === 'Returned' ? 'bg-dark' : 'bg-danger' }} px-3 py-2 fs-6">{{ __($order->status) }}</span>
                             </div>
                             @foreach($order->items as $item)
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span>{{ $item->product_snapshot_name ?? 'Product' }} x {{ $item->quantity }}</span>
+                                    <span>{{ $item->product_snapshot_name ?? __('Product') }} × {{ $item->quantity }}</span>
                                     <span class="fw-semibold">${{ number_format($item->total_price ?? ($item->unit_price * $item->quantity), 2) }}</span>
                                 </div>
                             @endforeach

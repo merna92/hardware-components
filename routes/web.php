@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\AuthController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Http\Request;
@@ -31,6 +33,7 @@ Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index
 Route::get('/products', [CatalogController::class, 'index'])->name('products.index');
 Route::get('/catalog/{product}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/products/{product}', [CatalogController::class, 'show'])->name('products.show');
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 Route::get('/about', fn () => view('about'))->name('about');
 Route::get('/contact', fn () => view('contact'))->name('contact');
@@ -228,6 +231,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware([AdminMiddleware::class])->group(function () {
     Route::get('/', fn () => redirect()->route('admin.dashboard'));
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs.index');
 
     // User Management (Gerges)
     Route::get('/users', [AdminController::class, 'users'])->name('users.index');
@@ -246,7 +250,15 @@ Route::prefix('admin')->name('admin.')->middleware([AdminMiddleware::class])->gr
     // Category Management (Mirna)
     Route::resource('categories', AdminCategoryController::class)->except(['show']);
 
+    // Brand Management
+    Route::resource('brands', AdminBrandController::class)->except(['show']);
+
+    // Review Management
+    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews.index');
+    Route::delete('/reviews/{review}', [AdminController::class, 'deleteReview'])->name('reviews.delete');
+
     // Product Management (Mirna)
+    Route::patch('/products/{product}/restore', [AdminProductController::class, 'restore'])->name('products.restore');
     Route::resource('products', AdminProductController::class)->except(['show']);
 
     // Order Management (Mirna)

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -13,7 +15,10 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->latest()->paginate(10);
+        $products = Product::withTrashed()
+            ->with('category')
+            ->latest()
+            ->paginate(10);
 
         return view('admin.products.index', compact('products'));
     }
@@ -21,9 +26,10 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('category_name')->get();
+        $brands = Brand::orderBy('brand_name')->get();
         $statuses = $this->statuses();
 
-        return view('admin.products.create', compact('categories', 'statuses'));
+        return view('admin.products.create', compact('categories', 'brands', 'statuses'));
     }
 
     public function store(Request $request)
@@ -35,6 +41,7 @@ class ProductController extends Controller
         }
 
         $product = Product::create($validated);
+        ActivityLog::record('product_created', "Product {$product->product_name} was created.", ['product_id' => $product->id]);
 
         if ($request->hasFile('images')) {
             $isFirst = true;
@@ -74,9 +81,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::orderBy('category_name')->get();
+        $brands = Brand::orderBy('brand_name')->get();
         $statuses = $this->statuses();
 
-        return view('admin.products.edit', compact('product', 'categories', 'statuses'));
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'statuses'));
     }
 
     public function update(Request $request, Product $product)
@@ -92,6 +100,7 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
+        ActivityLog::record('product_updated', "Product {$product->product_name} was updated.", ['product_id' => $product->id]);
 
         if ($request->hasFile('images')) {
             // Delete old images if new ones are uploaded
@@ -143,14 +152,25 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        ActivityLog::record('product_deleted', "Product {$product->product_name} was soft deleted.", ['product_id' => $product->id]);
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    public function restore(int $product)
+    {
+        $product = Product::onlyTrashed()->findOrFail($product);
+        $product->restore();
+        ActivityLog::record('product_restored', "Product {$product->product_name} was restored.", ['product_id' => $product->id]);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product restored successfully.');
     }
 
     private function validateProduct(Request $request)
     {
         return $request->validate([
             'category_id' => ['required', 'exists:categories,id'],
+            'brand_id' => ['nullable', 'exists:brands,id'],
             'product_name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,6 +47,7 @@ class AuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        ActivityLog::record('register', 'New user registered.', ['user_id' => $user->id]);
 
         return redirect()->route('welcome')->with('success', 'Registration successful! Welcome to Hardware Components.')->with('showWelcome', true);
     }
@@ -78,6 +80,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
+            ActivityLog::record('login', 'User logged in successfully.');
 
             if (Auth::user()->isAdmin()) {
                 return redirect()->intended('/admin/dashboard')->with('success', 'Welcome to Admin Dashboard.');

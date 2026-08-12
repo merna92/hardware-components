@@ -21,7 +21,8 @@ class CheckoutRequest extends FormRequest
             'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'payment_method' => ['required', 'in:bank_transfer,cash_on_delivery'],
+            'payment_method' => ['required', 'in:bank_transfer,cash_on_delivery,wallet'],
+            'payment_details' => ['nullable', 'string', 'max:255', 'required_if:payment_method,bank_transfer,wallet'],
         ];
     }
 

@@ -13,6 +13,17 @@
         @endforeach
     </select>
 </div>
+<div class="mb-3">
+    <label class="form-label fw-semibold">Brand</label>
+    <select name="brand_id" class="form-select">
+        <option value="">Select Brand</option>
+        @foreach($brands as $brand)
+            <option value="{{ $brand->id }}" @selected(old('brand_id', $product->brand_id ?? '') == $brand->id)>
+                {{ $brand->brand_name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 <div class="row g-3 mb-3">
     <div class="col-md-6">
         <label class="form-label fw-semibold">Price ($)</label>
@@ -137,4 +148,3 @@
         previewImages(document.getElementById('image_input'));
     });
 </script>
-

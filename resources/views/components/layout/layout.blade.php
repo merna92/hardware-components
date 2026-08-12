@@ -65,6 +65,7 @@
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- Toast Notifications -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
@@ -119,6 +120,26 @@
                     localStorage.setItem('theme', theme);
                 });
             }
+
+            document.querySelectorAll('form[data-confirm]').forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: form.dataset.confirm || 'Are you sure?',
+                        text: form.dataset.confirmText || 'This action can be changed later when restore is available.',
+                        icon: form.dataset.confirmIcon || 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: form.dataset.confirmButtonColor || '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: form.dataset.confirmButton || 'Yes, continue',
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
         });
     </script>
 </body>

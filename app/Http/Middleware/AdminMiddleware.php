@@ -18,7 +18,7 @@ class AdminMiddleware
         }
 
         $user = auth()->user();
-        if (!$user->isAdmin()) {
+        if (!$user->isAdmin() || !$user->hasPermission('manage_products')) {
             abort(403, 'Unauthorized. Admin access only.');
         }
 

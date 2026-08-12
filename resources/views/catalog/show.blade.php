@@ -80,7 +80,77 @@
                         <div class="col"><div class="p-3 bg-light rounded-3"><small class="text-muted d-block">{{ __('Status') }}</small><strong class="text-dark">{{ str_replace('_', ' ', $product->status) }}</strong></div></div>
                     </div>
                 </div>
+
+                <div class="mt-5 pt-3 border-top">
+                    <h5 class="fw-bold mb-3">{{ __('Reviews') }}</h5>
+                    @if(auth()->check())
+                        <form action="{{ route('reviews.store', $product) }}" method="POST" class="mb-4">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold d-block">{{ __('Rating') }}</label>
+                                <input type="hidden" name="rating" id="review_rating" value="5">
+                                <div class="d-flex align-items-center gap-1" id="ratingStars" role="radiogroup" aria-label="{{ __('Rating') }}">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <button type="button" class="btn p-0 border-0 bg-transparent star-btn" data-value="{{ $i }}" aria-label="{{ $i }} {{ __('star') }}">
+                                            <i class="bi bi-star-fill fs-4"></i>
+                                        </button>
+                                    @endfor
+                                </div>
+                                <small class="text-muted d-block mt-2">{{ __('Choose rating') }}</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">{{ __('Comment') }}</label>
+                                <textarea name="comment" rows="3" class="form-control" placeholder="{{ __('Share your experience...') }}"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger rounded-3 px-4 fw-semibold">{{ __('Submit Review') }}</button>
+                        </form>
+                    @else
+                        <div class="alert alert-light border mb-4">{{ __('Please login to write a review.') }}</div>
+                    @endif
+
+                    <div class="d-grid gap-3">
+                        @forelse($product->reviews()->with('user')->latest()->get() as $review)
+                            <div class="p-3 border rounded-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <strong class="text-dark">{{ $review->user?->name ?? __('Guest') }}</strong>
+                                    <div class="text-warning">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="mb-0 text-secondary">{{ $review->comment ?: __('No comment provided.') }}</p>
+                            </div>
+                        @empty
+                            <div class="text-muted">{{ __('No reviews yet.') }}</div>
+                        @endforelse
+                    </div>
+                </div>
             </section>
         </div>
     </main>
+    <script>
+        (function () {
+            const stars = document.querySelectorAll('#ratingStars .star-btn');
+            const input = document.getElementById('review_rating');
+            if (!stars.length || !input) return;
+            const paint = (value) => {
+                stars.forEach((btn) => {
+                    const icon = btn.querySelector('i');
+                    const active = Number(btn.dataset.value) <= Number(value);
+                    icon.className = active ? 'bi bi-star-fill fs-4' : 'bi bi-star fs-4';
+                    icon.style.color = active ? '#f5b301' : '#ced4da';
+                });
+            };
+            paint(input.value || 5);
+            stars.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    input.value = btn.dataset.value;
+                    paint(btn.dataset.value);
+                });
+                btn.addEventListener('mouseenter', () => paint(btn.dataset.value));
+            });
+            document.getElementById('ratingStars').addEventListener('mouseleave', () => paint(input.value || 5));
+        })();
+    </script>
 </x-layout.layout>
