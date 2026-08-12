@@ -73,4 +73,4 @@ Recommended branches are documented in `docs/IMPLEMENTATION-PLAN.md`.
 
 ## Sources
 
-UI/UX Design based on <a href="- https://www.figma.com/community/file/1219312065205187851/full-e-commerce-website-ui-ux-design?q_id=07285cf8-6bd2-47ed-a87b-3d9e1d1938a2" target="_blank">Full E-Commerce Website</a> by <a href="https://www.figma.com/@mdrimel15" target="_blank"> MD Rimel </a> licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>
+UI/UX Design based on <a href="https://www.figma.com/community/file/1219312065205187851/full-e-commerce-website-ui-ux-design?q_id=07285cf8-6bd2-47ed-a87b-3d9e1d1938a2" target="_blank">Full E-Commerce Website</a> by <a href="https://www.figma.com/@mdrimel15" target="_blank"> MD Rimel </a> licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>
